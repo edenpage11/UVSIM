@@ -7,7 +7,7 @@ accumulator = None
 class command:
     def __init__(self, word):
         self.operation = word[:2]
-        self.memLoc = word[2:]
+        self.memLoc = int(word[2:])
 
 
 class IOops(command):
@@ -24,6 +24,7 @@ class IOops(command):
     # prompts user to input a number then stores at LIM defined with function call from main
     def read(self, mem):
         word = input(f"enter value to store in memory location {str(mem)}: ")
+        global memory
         # Replace input with something that calls it from the command line text box in the GUI
 
         if word.isdigit():
@@ -34,7 +35,7 @@ class IOops(command):
             memory[mem] = word
         else:
             print('-----Error:Only input numbers, Try again.-----')
-            IOops.read(mem)
+            # IOops.read(self, mem)
 
     # 11 write mem location to screen.
     # in: location in memory int and value at LIM int // out: val at LIM int == to screen
@@ -230,9 +231,10 @@ def load_commands(commands):
     return memory
 
 def main():
-    inputs = ["1010", "1011", "2010", "3010", "2112", "1112"]
-    load_commands(inputs)
-    run_all()
+    pass
+    # inputs = ["1010", "1011", "2010", "3010", "2112", "1112"]
+    # load_commands(inputs)
+    # run_all()
     # should ask for input 2 times then print those values added
     #results: 
         # enter value to store in memory location 10: 1111
