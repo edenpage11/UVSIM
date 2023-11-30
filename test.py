@@ -29,13 +29,37 @@ class TestMain(unittest.TestCase):
 
     # 03: Eden Barlow - Testing read throws error when NaN input  11/30
     # input: 'hello' string // expected output: '-----Error:Only input numbers, Try again.-----' // p/f: p
-    @patch('builtins.input', side_effect=['hello'])
+    @patch('builtins.input', side_effect=['hello', '1234'])
     def test_read_bad(self, mock_input):
         test_read = main.IOops("1020")
-        print(test_read)
         with patch('sys.stdout', new_callable= StringIO) as mock_stdout:
             test_read.run()
         self.assertEqual(mock_stdout.getvalue().strip(), '-----Error:Only input numbers, Try again.-----')
+
+    # 04: Eden Barlow - testing if the function correctly prints out the positive value at specified memory location date: 11/30
+    # input: 1234 int // expected output: 1234 str // p/f: p 
+    def test_write_pos(self):
+        main.memory[15] = 1234
+        test_write = main.IOops('1115')
+        with patch('sys.stdout', new_callable= StringIO) as mock_stdout:
+            test_write.run()
+        self.assertEqual(mock_stdout.getvalue().strip(), '1234')
+
+    # 05: Eden Barlow - testing if the function correctly prints out the positive value at specified memory location date: 11/30
+    # input: -1234 int // expected output: -1234 str // p/f: p
+    def test_write_pos(self):
+        main.memory[15] = -1234
+        test_write = main.IOops('1115')
+        with patch('sys.stdout', new_callable= StringIO) as mock_stdout:
+            test_write.run()
+        self.assertEqual(mock_stdout.getvalue().strip(), '-1234')
+    
+    # 04: Eden Barlow - Testing write raises an error when attempting to access an invalid memory location. date: 9/25
+    # input: expected output: p/f:
+    def test_write_error(self):
+        test_write = main.IOops('11-1')
+        with self.assertRaises(AssertionError):
+            test_write.run()
         
 
 if __name__ == '__main__':

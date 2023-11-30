@@ -35,7 +35,7 @@ class IOops(command):
             memory[mem] = word
         else:
             print('-----Error:Only input numbers, Try again.-----')
-            # IOops.read(self, mem)
+            IOops.read(self, mem)
 
     # 11 write mem location to screen.
     # in: location in memory int and value at LIM int // out: val at LIM int == to screen

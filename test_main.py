@@ -11,17 +11,6 @@ class TestMain(unittest.TestCase):
     # name in the comments in the unit test case code.
 
     
-
-    # 03: Jia-Sian-testing if the function correctly print out the value at specified memory location date: 9/25
-    # input: expected output: p/f:
-    def test_write(self):
-        main.accumulator = 10
-        main.LSops.store(0)
-        main.IOops.write(0)
-        with patch('sys.stdout', new_callable= StringIO) as mock_stdout:
-            main.IOops.write(0)
-        printed_text = mock_stdout.getvalue().strip()
-        self.assertEqual(printed_text, '10')
     
     # 04: Jia-Sian - Testing write raises an error when attempting to access an invalid memory location. date: 9/25
     # input: expected output: p/f:
