@@ -1,5 +1,7 @@
 import tkinter as tk
 import main
+from tkinter import scrolledtext
+from tkinter import messagebox
 
 #functions of gui------------------------------------------------
 showtypecode = True
@@ -96,6 +98,29 @@ def button_zero():
     textbox.insert("end", "0")
 
 #functional buttons
+def button_help():
+    output_window = tk.Toplevel(window)
+
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+
+    x_position = screen_width - 400  
+    y_position = (screen_height - 675) // 2
+
+    # Set the geometry of the popup window
+    output_window.geometry(f"+{x_position}+{y_position}")
+    output_window.title("Help")
+    
+    # Create a Text widget with a vertical scrollbar
+    output_textbox = scrolledtext.ScrolledText(output_window, height=30, width=120, font=('Arial', 14))
+
+    with open("Help.txt", "r") as file:
+        for line in file:
+            output_textbox.insert(tk.END, line + '\n')
+
+    output_textbox.config(state='disabled')    
+    output_textbox.pack()
+
 def button_enter():
     check_type_code()
     textbox.insert("end", "\n")
@@ -103,21 +128,74 @@ def button_enter():
 def button_clear():
     textbox.delete("1.0", "end")
 
+def button_reset():
+    textbox.delete("1.0", "end")
+    output_textbox.delete("1.0", tk.END)
+
+    accvalue = tk.Label(codebox, text="null", font=('Arial', 20))
+    accvalue.grid(padx=4, pady=4, row=0, column=0, sticky=tk.W+tk.E)
+    lastvalue = tk.Label(codebox, text="null", font=('Arial', 20))
+    lastvalue.grid(padx=4, pady=4, row=1, column=0, sticky=tk.W+tk.E)
+
 def button_run():
+    red_flag = False
     global inputs
     commands = []
-    for i in range(0, len(inputs), 4):
-        input = inputs[i:i+4]
+
+    for i in range(0, len(inputs), 6):
+        input = inputs[i:i+6]
         command = ""
+        if not (len(inputs) == 6 or inputs == '43'):
+            red_flag = True
+            messagebox.showerror("Error", "Input should be 6 digits or the number 43.")
+            command = ""
+            break  # Exit the loop on error
         for num in input:
             command += str(num)
         commands.append(command)
-    main.load_commands(commands)
-    memory = main.run_all()
-    #display results
+
+    if not red_flag:
+        global output_textbox
+        output_window = tk.Toplevel(window)
+        output_window.title("Output")
+        output_textbox = tk.Text(output_window, height=10, width=50, font=('Arial', 14))
+        for command in commands:
+            output_textbox.insert(tk.END, f"{command}\n")
+
+        accumulator = tk.Label(codebox, text='Accumulator', font=('Arial', 20))
+        accumulator.grid(padx=4, pady=4, row=1, column=0, sticky=tk.N)
+        accvalue = tk.Label(codebox, text=main.accumulator, font=('Arial', 20))
+        accvalue.grid(padx=4, pady=4, row=0, column=0, sticky=tk.W+tk.E)
+        lastlabel = tk.Label(codebox, text='ProgramCounter', font=('Arial', 20))
+        lastlabel.grid(padx=4, pady=4, row=1, column=0, sticky=tk.N)
+        lastvalue = tk.Label(codebox, text=main.program_counter, font=('Arial', 20))
+        lastvalue.grid(padx=4, pady=4, row=1, column=0, sticky=tk.W+tk.E)
+        output_textbox.pack()
+
+        output_textbox.insert(tk.END, f"\nNew PC: {main.program_counter}")
+        output_textbox.insert(tk.END, f"\nAccumulator: {main.accumulator}")
+
+    # for line, value in memory: 
+    #     # print line on the left side of the memmenu box
+    #     if isinstance(value, command):
+    #         v_str = value.operation + value.memLoc
+    #         v_int = int(v_str)
+    #     else:
+    #         v_int = value
+    #     # print v_int on the right side of the memmenu box
+
+def center_window(root, width, height):
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    x_position = (screen_width - width) // 2
+    y_position = (screen_height - height) // 2
+
+    root.geometry(f"{width}x{height}+{x_position}+{y_position}")
 
 window = tk.Tk() #window/root object
 
+center_window(window, 800, 675)
 window.geometry("800x675") #geometry
 
 window.title("UV3 Simulator") #title
@@ -213,9 +291,9 @@ btn0 = tk.Button(controlbox, height=3, width=6, text="0", font=("Arial", 18), co
 btn0.grid(padx=2, pady=2, row=2, column=3, sticky=tk.W+tk.E)
 btnrun = tk.Button(controlbox, height=3, width=6, text="Run", font=("Arial", 18), command=button_run)
 btnrun.grid(padx=4, pady=2, row=0, column=4, sticky=tk.W+tk.E)
-btnreset = tk.Button(controlbox, height=3, width=6, text="Reset\nMemory", font=("Arial", 18))
+btnreset = tk.Button(controlbox, height=3, width=6, text="Reset\nMemory", font=("Arial", 18), command=button_reset)
 btnreset.grid(padx=4, pady=2, row=1, column=4, sticky=tk.W+tk.E)
-btnhelp= tk.Button(controlbox, height=3, width=6, text="Help", font=("Arial", 18))
+btnhelp= tk.Button(controlbox, height=3, width=6, text="Help", font=("Arial", 18), command=button_help)
 btnhelp.grid(padx=4, pady=2, row=2, column=4, sticky=tk.W+tk.E)
 
 mainframe.pack(fill='x')
