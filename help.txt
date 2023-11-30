@@ -1,0 +1,57 @@
+Help
+
+Inputting commands: 
+    - Commands can be input with the format #### with the first 2 ## being an operation code from the list below
+    and the second 2 ## being a reference to a memory location between 00 and 99.
+    - Input each command on it's own line
+    - Each line should only have 4 digits
+    - Use the buttons on the dialpad in the program to input lines of code
+
+Options of commands and their codes: 
+    I/O operations:
+
+        READ = 10                       Read a word from the keyboard into a specific location in memory.
+
+        WRITE = 11                     Write a word from a specific location in memory to screen.
+
+    Load/store operations:
+
+        LOAD = 20                      Load a word from a specific location in memory into the accumulator.
+
+        STORE = 21                     Store a word from the accumulator into a specific location in memory.
+
+    Arithmetic operation:
+
+        Add = 30                         Add a word from a specific location in memory to the word in the accumulator (leave the result in the accumulator)
+
+        SUBTRACT = 31             Subtract a word from a specific location in memory from the word in the accumulator (leave the result in the accumulator)
+
+        DIVIDE = 32                    Divide the word in the accumulator by a word from a specific location in memory (leave the result in the accumulator).
+
+        MULTIPLY = 33              multiply a word from a specific location in memory to the word in the accumulator (leave the result in the accumulator).
+
+    Control operation:
+
+        BRANCH = 40                 Branch to a specific location in memory
+
+        BRANCHNEG = 41         Branch to a specific location in memory if the accumulator is negative.
+
+        BRANCHZERO = 42       Branch to a specific location in memory if the accumulator is zero.
+
+        HALT = 43                       Pause the program
+
+Examples: 
+    - A line with the input 1001 would request an input from the user and store it in memory location 1
+    - A line with 3045 would add whatever value was most recently loaded into the accumulator to the value at memory location 45
+    and store it back in the accumulator
+
+Other buttons:
+    - Clear
+        - Clicking the clear button will clear the code that has been input to the text box
+    - New line
+        - The user should click the New Line button after 4 digits have been input to create a new line of code
+    - Reset memory
+        - The reset memory button will clear the memory, accumulator, and reset the program counter
+    - Run
+        - The run button will run all lines of code 
+        - (We are working on an update to open a new window and allow for more options for running the program)
