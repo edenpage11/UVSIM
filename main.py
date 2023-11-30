@@ -197,7 +197,7 @@ def step_in():
     global memory
     global accumulator
     command = memory[program_counter]
-    result = command.run()
+    accumulator = command.run()
     program_counter += 1
     return accumulator
 
@@ -231,15 +231,21 @@ def load_commands(commands):
     return memory
 
 def main():
-    pass
-    # inputs = ["1010", "1011", "2010", "3010", "2112", "1112"]
-    # load_commands(inputs)
-    # run_all()
+    inputs = ["1010","1110", "1011", "2010", "3010", "2112", "1112"]
+    load_commands(inputs)
+    run_all()
     # should ask for input 2 times then print those values added
-    #results: 
-        # enter value to store in memory location 10: 1111
-        # enter value to store in memory location 11: 1111
-        # 2222
+    # results: 
+    #     enter value to store in memory location 10: 1111
+    #     enter value to store in memory location 11: 1111
+    #     2222
+
+    # implemented 2 memories to handle 
+    # memory2 = {0: 00}
+    # memory1 = {0: None}
+    # memory1[0] = 1234
+    # memory2[0] = 23
+    # print(int(str(memory2[0]) + str(memory1[0])))
     
         
 main()

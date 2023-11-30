@@ -54,7 +54,7 @@ class TestMain(unittest.TestCase):
             test_write.run()
         self.assertEqual(mock_stdout.getvalue().strip(), '-1234')
     
-    # 04: Eden Barlow - Testing write raises an error when attempting to access an invalid memory location. date: 9/25
+    # 06: Eden Barlow - Testing write raises an error when attempting to access an invalid memory location. date: 9/25
     # input: expected output: p/f:
     def test_write_error(self):
         test_write = main.IOops('11-1')
