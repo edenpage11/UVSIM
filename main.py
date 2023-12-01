@@ -231,9 +231,10 @@ def load_commands(commands):
     return memory
 
 def main():
-    inputs = ["1010","1110", "1011", "2010", "3010", "2112", "1112"]
-    load_commands(inputs)
-    run_all()
+    pass
+    # inputs = ["1010","1110", "1011", "2010", "3010", "2112", "1112"]
+    # load_commands(inputs)
+    # run_all()
     # should ask for input 2 times then print those values added
     # results: 
     #     enter value to store in memory location 10: 1111
