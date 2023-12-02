@@ -9,7 +9,7 @@ def check_six_word():
     current_line, _ = map(int, textbox.index(tk.INSERT).split('.'))
     line_text = textbox.get(f"{current_line}.0", f"{current_line}.end")
 
-    if len(line_text) >= 6:
+    if len(line_text) >= 4:
         textbox.insert(tk.INSERT, '\n')
 
 def check_type_code():
