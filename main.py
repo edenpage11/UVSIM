@@ -1,14 +1,31 @@
 program_running = True
-user_inputing = True
-memory = { i : None for i in range(100) }
+user_inputting = True
+memory = {i: None for i in range(100)}
 program_counter = 0
 accumulator = None
+
+
+def get_memory():
+    return memory
+
+def get_accumulator():
+    return accumulator
+
+def get_program_counter():
+    return program_counter
+
+def reset_program_state():
+    global program_running, program_counter, accumulator
+    program_running = True
+    program_counter = 0
+    accumulator = None
+    memory.clear()
+    memory.update({i: None for i in range(100)})
 
 class command:
     def __init__(self, word):
         self.operation = word[:2]
         self.memLoc = int(word[2:])
-
 
 class IOops(command):
     def __init__(self, word):
