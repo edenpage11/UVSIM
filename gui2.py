@@ -11,35 +11,38 @@ class Editor(ctk.CTk):
         self.title("UVSIM code editor")
         self.configure(fg_color="lightblue")
 
-        # add widgets to app
+        # Add widgets to app
 
-        # number buttons
+        # Text box for commands
+        self.command_text = ctk.CTkTextbox(self, height=5, width=40, font=("Arial", 14), wrap="word")
+
+        self.command_text.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
+
+        # Number buttons
         for i in range(10):
-            button = ctk.CTkButton(self, height=50, width=85, text=i, font=("Arial", 18),
+            button = ctk.CTkButton(self, height=2, width=5, text=i, font=("Arial", 14),
                                     command=lambda v=i: self.num_button_click(v))
             col = 0
             if i % 3 == 1 or i == 9:
                 col = 1
             elif i % 3 == 2:
                 col = 2
-            button.grid(row=(i // 3) + 1, column=col, padx=6, pady=10)
+            button.grid(row=(i // 3) + 1, column=col, padx=6, pady=6)
 
-        # edit page function buttons
+        # Edit page function buttons
         edit_buttons = {"Run": (5, 2), "Clear": (5, 1), "Delete": (5, 0), "Help": (4, 0), "Newline": (4, 2)}
 
         for button_name in edit_buttons.keys():
-            button = ctk.CTkButton(self, height=50, width=85, text=button_name, font=("Arial", 18),
+            button = ctk.CTkButton(self, height=2, width=5, text=button_name, font=("Arial", 14),
                                    command=lambda v=button_name: self.edit_button_click(v))
-            button.grid(row=edit_buttons[button_name][0], column=edit_buttons[button_name][1], padx=6, pady=10)
+            button.grid(row=edit_buttons[button_name][0], column=edit_buttons[button_name][1], padx=6, pady=6)
 
-        # text box for commands to go in
-        label = ctk.CTkLabel(self, text="keypad", fg_color="transparent", font=("Arial", 18), pady=15)
-        label.grid(row=0, column=1)
+        # Output label
+        self.output_label = ctk.CTkLabel(self, text="Output: ", font=("Arial", 14), pady=10)
+        self.output_label.grid(row=6, column=0, columnspan=3)
 
     def num_button_click(self, num):
-        self.inputs.append(num)
-        print(num)
-        # textbox.insert("end", str(num))
+        self.command_text.insert("end", str(num))
 
     def edit_button_click(self, value):
         if value == "Run":
@@ -47,45 +50,47 @@ class Editor(ctk.CTk):
         elif value == "Clear":
             self.button_clr()
         elif value == "Delete":
-            print(value)
-            # button_del()
+            self.button_del()
         elif value == "Help":
-            print(value)
-            # button_help()
+            self.button_help()
         elif value == "Newline":
-            print(value)
-            # button_newline()
+            self.button_newline()
 
     def button_run(self):
-        self.iconify()
-        display = Runner(self)
-        display.mainloop()
-        commands = []
-        for i in range(0, len(self.inputs), 4):
-            input_ = self.inputs[i:i + 4]
-            command = ""
-            for num in input_:
-                command += str(num)
-            commands.append(command)
+        commands = self.command_text.get("1.0", "end-1c").split("\n")
+        commands = [cmd.strip() for cmd in commands if cmd.strip()]  # Remove empty lines
 
-        # Load commands into main.py and run the program
+        # Reset program state and load commands into main.py
+        main.reset_program_state()
         main.load_commands(commands)
+
+        # Run the program in main.py
         main.run_all()
 
-        # After the program finishes running, update the GUI to display the final values
-        self.update_display(display)
+        # After the program finishes running, update the output label with the final values
+        self.update_output_label()
 
     def button_clr(self):
-        self.inputs = []
+        self.command_text.delete("1.0", "end")
 
-    def update_display(self, display):
-        # Retrieve the values from main.py and update the display
+    def button_del(self):
+        self.command_text.delete("end-2c", "end-1c")
+
+    def button_help(self):
+        # Provide help information as needed
+        pass
+
+    def button_newline(self):
+        self.command_text.insert("end", "\n")
+
+    def update_output_label(self):
+        # Retrieve the values from main.py and update the output label
         memory_values = main.get_memory()
         accumulator_value = main.get_accumulator()
         program_counter_value = main.get_program_counter()
 
-        # Example: display.memory_label.config(text=f"Memory: {memory_values}")
-        # Update your display widgets accordingly
+        # Example: self.output_label.config(text=f"Output: Memory={memory_values}, Accumulator={accumulator_value}, Program Counter={program_counter_value}")
+        # Update your output label accordingly
 
 class Runner(ctk.CTk):
     def __init__(self, editor):
@@ -97,7 +102,16 @@ class Runner(ctk.CTk):
         # add widgets to app
 
         # memory
+        memory_label = ctk.CTkLabel(self, text="Memory: ", font=("Arial", 16), pady=10)
+        memory_label.pack()
+
         # accumulator and program counter
+        accumulator_label = ctk.CTkLabel(self, text="Accumulator: ", font=("Arial", 16), pady=10)
+        accumulator_label.pack()
+
+        program_counter_label = ctk.CTkLabel(self, text="Program Counter: ", font=("Arial", 16), pady=10)
+        program_counter_label.pack()
+
         # buttons
         button = ctk.CTkButton(self, height=50, width=85, text="edit", font=("Arial", 18),
                                command=lambda: self.show_editor(editor))
@@ -107,7 +121,6 @@ class Runner(ctk.CTk):
         # This method is called when the Runner window is closed
         editor.deiconify()
         self.withdraw()
-
 
 if __name__ == "__main__":
     app = Editor()
