@@ -129,6 +129,16 @@ class TestMain(unittest.TestCase):
         main.arithmetic("3301").run()
         self.assertEqual(main.accumulator, 9999)
 
+# 15: Eden Barlow - Testing if the load function loads the correct value from memory to the accumulator date: 12/2
+    # input: 10 int // expected output: -5678 int // p/f: p
+    def test_load_val(self):
+        main.accumulator = None
+        main.memory[10] = -5678
+
+        main.LSops("2000").run()
+        self.assertEqual(main.accumulator, -5678)
+
+
 
 if __name__ == '__main__':
     unittest.main() 
