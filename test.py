@@ -45,9 +45,9 @@ class TestMain(unittest.TestCase):
             test_write.run()
         self.assertEqual(mock_stdout.getvalue().strip(), '1234')
 
-    # 05: Eden Barlow - testing if the function correctly prints out the positive value at specified memory location date: 11/30
+    # 05: Eden Barlow - testing if the function correctly prints out the negative value at specified memory location date: 11/30
     # input: -1234 int // expected output: -1234 str // p/f: p
-    def test_write_pos(self):
+    def test_write_neg(self):
         main.memory[15] = -1234
         test_write = main.IOops('1115')
         with patch('sys.stdout', new_callable= StringIO) as mock_stdout:
@@ -61,16 +61,34 @@ class TestMain(unittest.TestCase):
         with self.assertRaises(AssertionError):
             test_write.run()
         
-    ###############################################################################
-    # 08: Blake - Test  Date: 12/2
+    ##############################################################################
+
+    # 07: JiaSian/Blake - Test add can properly add the positive numbers date: 12/2
     # input: expected output: p/f:
+    def test_add_pos(self):
+        main.memory[0] = 1234
+        main.accumulator = 1234
+        test_add = main.arithmetic('3000')
+        test_add.run()  # Call the run method
+        self.assertEqual(main.accumulator, 2468)
 
-    # 07: Blake - Test add can properly add the positive numbers date: 12/2
+    # 08: JiaSian/Blake - Testing if the add can add negative numbers together. date: 12/2
     # input: expected output: p/f:
+    def test_add_neg(self):
+        main.memory[0] = 1234
+        main.accumulator = -5678
+        main.arithmetic("3000").run()
+        self.assertEqual(main.accumulator, -4444)
 
+    # 09: JiaSian/Blake - Testing if add can subtract the positive numbers. date: 12/2
+    # input: expected output: p/f:
+    def test_subtract_pos(self):
+        main.memory[0] = 1234
+        main.accumulator = 3456
+        main.arithmetic("3100").run()
+        self.assertEqual(main.accumulator, 2222)
 
-
-
-
+    
+    
 if __name__ == '__main__':
     unittest.main() 

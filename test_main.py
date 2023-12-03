@@ -4,46 +4,6 @@ from io import StringIO
 import main
 
 class TestMain(unittest.TestCase):
-    #Each test case should have a test case number,
-    # short description, test date, inputs, expected outputs, 
-    # pass/ fail.
-    #Each student needs to design 4-5 unit tests and put your 
-    # name in the comments in the unit test case code.
-
-    # 04: Jia-Sian - Testing write raises an error when attempting to access an invalid memory location. date: 9/25
-    # input: expected output: p/f:
-    def test_write_error(self):
-        with self.assertRaises(AssertionError):
-            main.IOops.write(-1)
-
-
-
-
-
-            
-    # 05: Jia Sian-testing if the add can correctly add the positive numbers date: 9/25
-    # input: expected output: p/f:
-    def test_add_pos(self):
-        main.memory[0] = 1234
-        main.accumulator = 1234
-        main.arithmetic.add(0)
-        self.assertEqual(main.accumulator, 2468)
-
-    # 06: Jia Sian-testing if the add can correctly add negative numbers together. date: 9/25
-    # input: expected output: p/f:
-    def test_add_neg(self):
-        main.memory[0] = 1234
-        main.accumulator = -5678
-        main.arithmetic.add(0)
-        self.assertEqual(main.accumulator, -4444)
-    
-    # 07: Jia Sian-testing if the add can correctly substract the positive numbers together. date: 9/25
-    # input: expected output: p/f:
-    def test_substract_pos(self):
-        main.memory[0] = 1234
-        main.accumulator = 3456
-        main.arithmetic.substract(0)
-        self.assertEqual(main.accumulator, 2222)
 
     # 08: Jia Sian-testing if the add can correctly substract the negative numbers together. date: 9/25
     # input: expected output: p/f:
