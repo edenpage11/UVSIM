@@ -105,6 +105,14 @@ class TestMain(unittest.TestCase):
         main.arithmetic("3201").run()
         self.assertEqual(main.accumulator, 2)
 
+    # 12: Bryceton Sudweeks /Blake - Testing if the divide function can accurately divide two negative numbers. date: 12/2
+    # input: mem location 1 - 2222 accumulator - 4444 // expected output: 2
+    def test_divide_neg(self):
+        main.accumulator = -4444
+        main.memory[1] = -2222
+        main.arithmetic("3201").run()
+        self.assertEqual(main.accumulator, 2)
+
 
 if __name__ == '__main__':
     unittest.main() 
