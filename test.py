@@ -121,6 +121,14 @@ class TestMain(unittest.TestCase):
         main.arithmetic("3301").run()
         self.assertEqual(main.accumulator, 8888)
 
+    # 14: Bryceton Sudweeks /Blake - Testing if the multiply function can accurately multiply two negative numbers. date: 12/2
+    # input: mem location - -0003 accumulator - -3333 // expected output: 9999
+    def test_multiply_neg(self):
+        main.accumulator = -3333
+        main.memory[1] = -3
+        main.arithmetic("3301").run()
+        self.assertEqual(main.accumulator, 9999)
+
 
 if __name__ == '__main__':
     unittest.main() 
