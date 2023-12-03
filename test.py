@@ -60,8 +60,6 @@ class TestMain(unittest.TestCase):
         test_write = main.IOops('11-1')
         with self.assertRaises(AssertionError):
             test_write.run()
-        
-    ##############################################################################
 
     # 07: JiaSian/Blake - Testing if the add can add negative numbers together. date: 12/2
     # input: expected output: p/f:
@@ -96,7 +94,6 @@ class TestMain(unittest.TestCase):
         main.arithmetic("3100").run()
         self.assertEqual(main.accumulator, 2222)
 
-
     # 11: Bryceton Sudweeks/Blake - Testing if divide function can accurately divide two positive numbers. date: 12/2
     # input: mem location 1 - 2222 accumulator - 4444 // expected output: 2
     def test_divide_pos(self):
@@ -129,8 +126,9 @@ class TestMain(unittest.TestCase):
         main.arithmetic("3301").run()
         self.assertEqual(main.accumulator, 9999)
 
-# 15: Eden Barlow - Testing if the load function loads the correct value from memory to the accumulator date: 12/2
-    # input: 10 int // expected output: -5678 int // p/f: p
+    ##############################################################################
+    # 15: Eden Barlow - Testing if the load function loads the correct value from memory to the accumulator date: 12/2
+    # input: 10 int // expected output: -5678 int // p/f: 
     def test_load_val(self):
         main.accumulator = None
         main.memory[10] = -5678
@@ -138,7 +136,37 @@ class TestMain(unittest.TestCase):
         main.LSops("2000").run()
         self.assertEqual(main.accumulator, -5678)
 
+    # 16: Eden Barlow - Testing load function that word is None if memory is empty date: 12/2
+    # input: 10 int // expected output: None NoneType // p/f: 
+    def test_load_no_val(self):
+        main.accumulator = 1234
 
+        main.LSops("2000").run()
+        self.assertEqual(main.accumulator, None)
+
+    # 17: Eden Barlow - Testing store function that location in memory contains word from accumulator date: 12/2
+    # input: 10 int // expected output: 1234 int // p/f: 
+    def test_store_val(self):
+        main.accumulator = 1234
+
+        main.LSops("2100").run()
+        self.assertEqual(main.memory[10], 1234)
+
+    # 18: Eden Barlow /Blake - Testing that location in memory == None if accumulator is empty date: 12/2
+    # input: 10 int // expected output: None NoneType // p/f: 
+    def test_store_no_val(self):
+        main.accumulator = None
+        main.LSops("2100").run()
+        self.assertEqual(main.memory[10], None)
+    ##################################################################################
+
+    # 19: Blake - testing branch to negative. date: 12/2
+    # input: Memory address expected output: None p/f: Pass
+    def test_branch_negative(self):
+        main.BRops("4000").run()
+        self.assertEqual(main.program_counter, 0)
+
+    
 
 if __name__ == '__main__':
     unittest.main() 
