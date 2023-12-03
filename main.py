@@ -103,7 +103,7 @@ class arithmetic(command):
     # 31 subtract val in memory from accumulator.
     # in: location in memory int accumulator int // out: word in acc -= word from LIM int
     # subtracts ints from LIM from int in accumulator then stores in the accumulator
-    def substract(self, mem):
+    def subtract(self, mem):
         global accumulator
         x = accumulator
         y = memory[mem]
