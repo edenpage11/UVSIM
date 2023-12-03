@@ -166,6 +166,20 @@ class TestMain(unittest.TestCase):
         main.BRops("4000").run()
         self.assertEqual(main.program_counter, 0)
 
+    # 20: Blake - testing branch to positive. date: 12/2
+    # input: Memory address expected output: None p/f: Pass
+    def test_branch_positive(self):
+        main.BRops("4001").run()
+        self.assertEqual(main.program_counter, 1)
+
+    # 21: Blake - testing when accumulator is negative. date: 12/2
+    # input: Memory address expected output: None p/f: Pass
+    def test_branchneg_neg(self):
+        main.program_counter = 0
+        main.accumulator = -5
+        main.BRops("4101").run()
+        self.assertEqual(main.program_counter, 1)
+
     
 
 if __name__ == '__main__':
