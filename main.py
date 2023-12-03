@@ -186,6 +186,7 @@ class BRops(command):
     # 43 Pause the program. no parameter.
     # in: program_running = true bool// out: program_running = false bool
     # when called, the program pauses running because variable is set to false
+    @classmethod
     def halt(self):
         global program_running
         print('-----Halting Program-----')

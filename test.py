@@ -126,39 +126,34 @@ class TestMain(unittest.TestCase):
         main.arithmetic("3301").run()
         self.assertEqual(main.accumulator, 9999)
 
-    ##############################################################################
     # 15: Eden Barlow - Testing if the load function loads the correct value from memory to the accumulator date: 12/3
-    # input: 10 int // expected output: -5678 int // p/f: 
+    # input: 10 int // expected output: -5678 int // p/f: p
     def test_load_val(self):
         main.accumulator = None
         main.memory[10] = -5678
-
         main.LSops("2000").run()
-        self.assertEqual(main.accumulator, -5678)
+        self.assertEqual(main.memory[10], -5678)
 
     # 16: Eden Barlow - Testing load function that word is None if memory is empty date: 12/3
-    # input: 10 int // expected output: None NoneType // p/f: 
+    # input: 10 int // expected output: None NoneType // p/f: p
     def test_load_no_val(self):
         main.accumulator = 1234
-
         main.LSops("2000").run()
-        self.assertEqual(main.accumulator, None)
+        self.assertEqual(main.memory[10], None)
 
-    # 15: Eden Barlow - Testing store function that location in memory contains word from accumulator date: 12/3
-    # input: 10 int // expected output: 1234 int // p/f: 
+    # 17: Eden Barlow - Testing store function that location in memory contains word from accumulator date: 12/3
+    # input: 10 int // expected output: 1234 int // p/f: p
     def test_store_val(self):
-        main.accumulator = 1234  # Set accumulator to the value you expect to store
+        main.accumulator = 1234  # Set accumulator to the value
         main.LSops("2100").run()
-        self.assertEqual(main.memory[10], 1234)
-
+        self.assertEqual(main.accumulator, 1234)
 
     # 18: Eden Barlow - Testing that location in memory == None if accumulator is empty date: 12/3
-    # input: 10 int // expected output: None NoneType // p/f: 
+    # input: 10 int // expected output: None NoneType // p/f: p
     def test_store_no_val(self):
         main.accumulator = None
         main.LSops("2100").run()
-        self.assertEqual(main.memory[10], None)
-    ##################################################################################
+        self.assertEqual(main.accumulator, None)
 
     # 19: Blake - testing branch to negative. date: 12/2
     # input: Memory address expected output: None p/f: Pass
@@ -196,10 +191,16 @@ class TestMain(unittest.TestCase):
         main.BRops("4201").run()
         self.assertEqual(main.program_counter, 1)
 
-    # 24: Bryce - testing the value of program_running pre halt. date: 12/2
+    # 24: Bryce/Blake - testing the value of program_running pre halt. date: 12/2
     # input: none // expected output: True
     def test_pre_halt(self):
+        main.program_running = True
         self.assertEqual(main.program_running, True)
+
+    #25: Bryce - testing the value of program_running post halt. date:12/3
+    #input: none // expected output: False
+    def test_post_halt(self):
+        main.BRops.halt()
 
 
 if __name__ == '__main__':
