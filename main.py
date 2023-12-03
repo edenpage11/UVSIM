@@ -230,6 +230,7 @@ def load_commands(commands):
         else:
             index_input -= 1
             print("invalid command")
+            return False
         index_input += 1
     print(memory)
     return memory

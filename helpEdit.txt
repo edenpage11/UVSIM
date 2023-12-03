@@ -6,6 +6,7 @@ Inputting commands:
     - Input each command on it's own line
     - Each line should only have 4 digits
     - Use the buttons on the dialpad in the program to input lines of code
+    - You may also type with your keyboard, but keep in mind that the program only accepts digits
 
 Options of commands and their codes: 
     I/O operations:
@@ -48,10 +49,14 @@ Examples:
 Other buttons:
     - Clear
         - Clicking the clear button will clear the code that has been input to the text box
-    - New line
+    - Newline
         - The user should click the New Line button after 4 digits have been input to create a new line of code
-    - Reset memory
-        - The reset memory button will clear the memory, accumulator, and reset the program counter
+        - The system will only input a newline if at least 4 digits have been input
+        - If a line is longer that 4 digits, the system will truncate the extra digits from the end
+    - Delete
+        - The delete button will delete the last digit in the editor
     - Run
-        - The run button will run all lines of code 
-        - (We are working on an update to open a new window and allow for more options for running the program)
+        - The run button will compile the code into an executable file and open the window to run the program
+    - Help
+        - Clicking help will roeopen this window on this page
+        - The window to run the program also has a help button
