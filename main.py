@@ -227,6 +227,9 @@ def load_commands(commands):
             memory[index_input] = arithmetic(command)
         elif command[0] == "4":
             memory[index_input] = BRops(command)
+        else:
+            index_input -= 1
+            print("invalid command")
         index_input += 1
     print(memory)
     return memory
