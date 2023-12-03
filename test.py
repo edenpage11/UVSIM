@@ -180,7 +180,37 @@ class TestMain(unittest.TestCase):
         main.BRops("4101").run()
         self.assertEqual(main.program_counter, 1)
 
-    
+    ##############
+    # 22: Blake - testing when accumulator is zero. date: 12/2
+    # input: Memory address expected output: None p/f: Pass
+    def test_branchneg_zero(self):
+        main.program_counter = 0
+        main.accumulator = 0
+        main.BRops("4105").run()
+        self.assertEqual(main.program_counter, 5)
+
+    # 23: Blake - testing when accumulator is 0. date: 12/2
+    # input: expected output: p/f:
+    def test_branchzero_zero(self):
+        main.program_counter = 0
+        main.accumulator = 0
+        main.BRops("4201").run()
+        self.assertEqual(main.program_counter, 1)
+
+
+
+    # 24: Bryce - testing the value of program_running pre halt. date: 12/2
+    # input: none // expected output: True
+    def test_pre_halt(self):
+        self.assertEqual(main.program_running, True)
+
+    # 25: Bryce - testing the value of program_running post halt. date: 12/2
+    # input: none // expected output: False
+    def test_post_halt(self):
+        main.program_running = True  # Reset program_running to True before testing
+        main.BRops().halt()
+        self.assertEqual(main.program_running, False)
+
 
 if __name__ == '__main__':
     unittest.main() 
