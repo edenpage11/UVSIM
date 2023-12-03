@@ -127,7 +127,7 @@ class TestMain(unittest.TestCase):
         self.assertEqual(main.accumulator, 9999)
 
     ##############################################################################
-    # 15: Eden Barlow - Testing if the load function loads the correct value from memory to the accumulator date: 12/2
+    # 15: Eden Barlow - Testing if the load function loads the correct value from memory to the accumulator date: 12/3
     # input: 10 int // expected output: -5678 int // p/f: 
     def test_load_val(self):
         main.accumulator = None
@@ -136,7 +136,7 @@ class TestMain(unittest.TestCase):
         main.LSops("2000").run()
         self.assertEqual(main.accumulator, -5678)
 
-    # 16: Eden Barlow - Testing load function that word is None if memory is empty date: 12/2
+    # 16: Eden Barlow - Testing load function that word is None if memory is empty date: 12/3
     # input: 10 int // expected output: None NoneType // p/f: 
     def test_load_no_val(self):
         main.accumulator = 1234
@@ -144,7 +144,7 @@ class TestMain(unittest.TestCase):
         main.LSops("2000").run()
         self.assertEqual(main.accumulator, None)
 
-    # 15: Eden Barlow - Testing store function that location in memory contains word from accumulator date: 12/2
+    # 15: Eden Barlow - Testing store function that location in memory contains word from accumulator date: 12/3
     # input: 10 int // expected output: 1234 int // p/f: 
     def test_store_val(self):
         main.accumulator = 1234  # Set accumulator to the value you expect to store
@@ -152,7 +152,7 @@ class TestMain(unittest.TestCase):
         self.assertEqual(main.memory[10], 1234)
 
 
-    # 18: Eden Barlow - Testing that location in memory == None if accumulator is empty date: 12/2
+    # 18: Eden Barlow - Testing that location in memory == None if accumulator is empty date: 12/3
     # input: 10 int // expected output: None NoneType // p/f: 
     def test_store_no_val(self):
         main.accumulator = None
@@ -200,6 +200,7 @@ class TestMain(unittest.TestCase):
     # input: none // expected output: True
     def test_pre_halt(self):
         self.assertEqual(main.program_running, True)
+
 
 if __name__ == '__main__':
     unittest.main() 

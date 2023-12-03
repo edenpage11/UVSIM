@@ -128,10 +128,12 @@ class TestMain(unittest.TestCase):
     #input: none // expected output: True !!!Getting False!!!
         self.assertEqual(main.program_running, True)
 
-        #24: Bryce - testing the value of program_running post halt. date:9/25
+    #25: Bryce - testing the value of program_running post halt. date:12/3
     #input: none // expected output: False
+    def test_post_halt(self):
         main.BRops.halt()
         self.assertEqual(main.program_running, False)
+
         
 
 if __name__ == '__main__':
