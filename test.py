@@ -63,7 +63,15 @@ class TestMain(unittest.TestCase):
         
     ##############################################################################
 
-    # 07: JiaSian/Blake - Test add can properly add the positive numbers date: 12/2
+    # 07: JiaSian/Blake - Testing if the add can add negative numbers together. date: 12/2
+    # input: expected output: p/f:
+    def test_add_neg(self):
+        main.memory[0] = 1234
+        main.accumulator = -5678
+        main.arithmetic("3000").run()
+        self.assertEqual(main.accumulator, -4444)
+
+    # 08: JiaSian/Blake - Test add can properly add the positive numbers date: 12/2
     # input: expected output: p/f:
     def test_add_pos(self):
         main.memory[0] = 1234
@@ -72,15 +80,15 @@ class TestMain(unittest.TestCase):
         test_add.run()  # Call the run method
         self.assertEqual(main.accumulator, 2468)
 
-    # 08: JiaSian/Blake - Testing if the add can add negative numbers together. date: 12/2
+    # 09: JiaSian/Blake - Testing add can correctly subtract the negative numbers. date: 12/2
     # input: expected output: p/f:
-    def test_add_neg(self):
-        main.memory[0] = 1234
+    def test_subtract_neg(self):
         main.accumulator = -5678
-        main.arithmetic("3000").run()
+        main.memory[1] = -1234
+        main.arithmetic("3101").run()  # Using run method
         self.assertEqual(main.accumulator, -4444)
 
-    # 09: JiaSian/Blake - Testing if add can subtract the positive numbers. date: 12/2
+    # 010: JiaSian/Blake - Testing if add can subtract the positive numbers. date: 12/2
     # input: expected output: p/f:
     def test_subtract_pos(self):
         main.memory[0] = 1234
@@ -88,7 +96,15 @@ class TestMain(unittest.TestCase):
         main.arithmetic("3100").run()
         self.assertEqual(main.accumulator, 2222)
 
-    
-    
+
+    # 11: Bryceton Sudweeks/Blake - Testing if divide function can accurately divide two positive numbers. date: 12/2
+    # input: mem location 1 - 2222 accumulator - 4444 // expected output: 2
+    def test_divide_pos(self):
+        main.accumulator = 4444
+        main.memory[1] = 2222
+        main.arithmetic("3201").run()
+        self.assertEqual(main.accumulator, 2)
+
+
 if __name__ == '__main__':
     unittest.main() 
