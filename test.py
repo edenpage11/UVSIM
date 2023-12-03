@@ -113,6 +113,14 @@ class TestMain(unittest.TestCase):
         main.arithmetic("3201").run()
         self.assertEqual(main.accumulator, 2)
 
+    # 13: Bryceton Sudweeks /Blake - Testing if the multiply function can accurately multiply two positive numbers. date: 12/2
+    # input: mem location 1 - 0002 accumulator - 800 // expected output: 1600
+    def test_multiply_pos(self):
+        main.accumulator = 4444
+        main.memory[1] = 2
+        main.arithmetic("3301").run()
+        self.assertEqual(main.accumulator, 8888)
+
 
 if __name__ == '__main__':
     unittest.main() 
