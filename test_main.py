@@ -10,14 +10,17 @@ class TestMain(unittest.TestCase):
     #Each student needs to design 4-5 unit tests and put your 
     # name in the comments in the unit test case code.
 
-    
-    
     # 04: Jia-Sian - Testing write raises an error when attempting to access an invalid memory location. date: 9/25
     # input: expected output: p/f:
     def test_write_error(self):
         with self.assertRaises(AssertionError):
             main.IOops.write(-1)
 
+
+
+
+
+            
     # 05: Jia Sian-testing if the add can correctly add the positive numbers date: 9/25
     # input: expected output: p/f:
     def test_add_pos(self):
