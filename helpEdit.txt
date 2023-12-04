@@ -7,6 +7,7 @@ Inputting commands:
     - Each line should only have 4 digits
     - Use the buttons on the dialpad in the program to input lines of code
     - You may also type with your keyboard, but keep in mind that the program only accepts digits
+    - Invalid commands will be ignored by the system
 
 Options of commands and their codes: 
     I/O operations:

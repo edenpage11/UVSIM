@@ -196,21 +196,20 @@ def step_in():
     global program_counter 
     global memory
     global accumulator
-    command = memory[program_counter]
-    accumulator = command.run()
-    program_counter += 1
-    return accumulator
+    global program_running
+    if not isinstance(memory[program_counter], command):
+            program_running = False
+    if program_running:
+        curr_command = memory[program_counter]
+        curr_command.run()
+        program_counter += 1
+    return memory
 
 def run_all():
-    global program_counter
     global program_running
     global memory
-    global accumulator
     while program_running:
-        memory[program_counter].run()
-        program_counter += 1        
-        if memory[program_counter] == None:
-            program_running = False
+        step_in()
     return memory
      
 
@@ -230,9 +229,7 @@ def load_commands(commands):
         else:
             index_input -= 1
             print("invalid command")
-            return False
         index_input += 1
-    print(memory)
     return memory
 
 def main():
