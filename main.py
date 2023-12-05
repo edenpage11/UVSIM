@@ -19,14 +19,16 @@ class IOops(command):
             self.read(self.memLoc)
         elif self.operation[1] == "1":
             self.write(self.memLoc)
+        else: 
+            print("invalid command")
     # 10 read keyboard input into mem location. all function parameters are int's.
     # in: location in memory int  user input string // out: val at LIM == user input int 
     # prompts user to input a number then stores at LIM defined with function call from main
     def read(self, mem):
-        word = input(f"enter value to store in memory location {str(mem)}: ")
+        global accumulator
+        word = str(accumulator)
         global memory
         # Replace input with something that calls it from the command line text box in the GUI
-
         if word.isdigit():
             word = int(word)
             memory[mem] = word
@@ -34,8 +36,7 @@ class IOops(command):
             word = int(word)
             memory[mem] = word
         else:
-            print('-----Error:Only input numbers, Try again.-----')
-            IOops.read(self, mem)
+            raise(TypeError)
 
     # 11 write mem location to screen.
     # in: location in memory int and value at LIM int // out: val at LIM int == to screen
@@ -56,6 +57,8 @@ class LSops(command):
             self.load(self.memLoc)
         elif self.operation[1] == "1":
             self.store(self.memLoc)
+        else: 
+            print("invalid command")
     # 20 load from mem location into accumulator.
     # in: location in memory int and value at location int // out: accumulator == word from that LIM int
     # accesses memory at location specified with function call and sets accumulator to hold it
@@ -87,6 +90,8 @@ class arithmetic(command):
             self.divide(self.memLoc)
         elif self.operation[1] == "3":
             self.multiply(self.memLoc)
+        else: 
+            print("invalid command")
     # 30 add accumulator and val in memory.
     # in: location in memory int accumulator int // out: word in acc += word from LIM int
     # adds ints from accumulator and location in memory then stores in the accumulator
@@ -155,6 +160,8 @@ class BRops(command):
             self.branchzero(self.memLoc)
         elif self.operation[1] == "3":
             self.halt()
+        else: 
+            print("invalid command")
     # 40 branch to specific location in memory.
     # in: destination int // out: program counter = destination int
     # Go to a specified location in memory (if command is there it will run)
@@ -193,23 +200,11 @@ class BRops(command):
 
 # run 1 line at a time
 def step_in():
-    global program_counter 
-    global memory
-    global accumulator
     global program_running
-    if not isinstance(memory[program_counter], command):
-            program_running = False
     if program_running:
         curr_command = memory[program_counter]
         curr_command.run()
         program_counter += 1
-    return memory
-
-def run_all():
-    global program_running
-    global memory
-    while program_running:
-        step_in()
     return memory
      
 

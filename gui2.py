@@ -168,10 +168,11 @@ class Runner(ctk.CTkToplevel):
             self.editor.deiconify()
             self.quit()
         if value == "Run":
-            main.run_all()
+            while main.program_running:
+                self.step_in()
             self.update_mem()
         elif value == "Step in":
-            main.step_in()
+            self.step_in()
             self.update_mem()
         elif value == "Halt":
             main.program_running = False
@@ -211,6 +212,45 @@ class Runner(ctk.CTkToplevel):
                 val = f"comm {self.get_val(val)}"
             self.indeces.insert("end", f"{index}\n")
             self.values.insert("end", f"{val}\n")
+
+    def step_in(self):
+        # check if we're on a command
+        try:
+            if not isinstance(main.memory[main.program_counter], main.command):
+                main.program_running = False
+            
+            if main.program_running:
+                self.curr_command = main.memory[main.program_counter]
+                if isinstance(self.curr_command, main.IOops):
+                    self.runIO()
+                else:
+                    self.curr_command.run()
+                main.program_counter += 1
+        except TypeError:
+            self.console.insert("end", "\n-----Error:Only input numbers, Try again.-----\n")
+            self.step_in()
+    
+    def runIO(self):
+        if self.curr_command.operation[1] == "0":
+            self.read()
+        else:
+            self.write()
+
+    def read(self):
+        mem = self.curr_command.memLoc
+        self.console.insert("end", f"enter value to store in memory location {str(mem)}: ")
+        self.console.bind("<Return>", self.handle_enter)
+
+
+    def handle_enter(self, event):
+        user_input = self.console.get("end-5c", "end-1c")
+        main.accumulator = user_input
+        self.curr_command.run()
+        self.update_mem()
+
+    def write(self, mem):
+        print("write")
+        pass
 
 class Helper(ctk.CTkToplevel):
     def __init__(self, helper_file, editor):
