@@ -1,0 +1,34 @@
+Product Quality Justification Document
+Project: UVSim Educational Software
+Date: 11/12/2023
+
+Introduction:
+    This document justifies the product quality of the UVSim Educational Software using
+    two key compliance and improvement metrics: Adherence to Coding Standards and
+    Bug Fix Turnaround Time.
+
+1. Adherence to Coding Standards:
+    With a pylint rating of 2.65/10(with negative scores possible) there are quite a few
+    improvements to be made many of witch will be easy to add. With small changes our
+    score will greatly improve and the code will better follow the established standards,
+    ensuring consistency and maintainability.
+
+2. Bug Fix Turnaround Time:
+    Bug fix turnaround time measures how quickly our team identifies, addresses, and
+    resolves found issues or bugs. On average, we resolve these bugs within 1-2 days to try
+    to minimize any bigger code changes as a result of a missed bug.
+
+3. Code Comment Density:
+    The comment density metric evaluates the proportion of code accompanied by comments.
+    As of the latest assessment, the UVSim Educational Software file main.py exhibits a comment density
+    of approximately 26.3%. "Comment Density = (Number of comment lines/Total number of lines)*100" 
+    High comment density signifies effective code documentation, enhancing code comprehension
+    and overall quality.
+
+Justification for Product Quality:
+    The combination of a potentially higher adherence to coding standards and efficient
+    bug fix turnaround time justifies the product quality of the UVSim Educational Software.
+    While refactoring code is necessary, scrapping large portions of the prototype or
+    restarting completely is not necessary.
+    
+-Team 3 UVSim developement team
