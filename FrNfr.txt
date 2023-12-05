@@ -1,0 +1,24 @@
+Functional requirement:
+
+-The emulator should be able to load and execute BasicML programs.
+-display registers and memory in gui. 
+-input area will be open when inputing, and closed when running.
+-Clearly explains how commands should be formatted.
+-user can step through or run all lines of code.
+-refactor functions to be classes with max 5 attributes, 10 methods, 5 couplings.
+-Users need a button to click to execute their command (a “run” button)
+-Displays lines of code being executed 
+
+Non-functional requirement:
+
+-User Friendly: The GUI should have an intuitive design that guides users on how to interact with the emulator. Elements such as buttons, input areas, and displays should be self-explanatory.
+-Quality of GUI: The GUI should be responsive, ensuring a consistent and optimal user experience across different screen sizes and resolutions.
+-Robust Code: In case of an error, the system should provide clear and meaningful error messages to the user, guiding them on how to address the issue.
+
+-Using 2's compliment, UVSim should handle 6 digits decimal calculation without expanding the word size (4 digits). You need to revise the FR accordingly.
+-Load and store move things between memory and accumulator 
+-Read and write move things between memory and user 
+-Arithmetic operations work with memory and accumulator 
+-Branch operations move you within memory
+-If there's an error the error message should be easy to understand to the user, and the error should not break the program.
+-Commands broken into instruction, mem location, and word
