@@ -8,6 +8,7 @@ Functional requirement:
 -refactor functions to be classes with max 5 attributes, 10 methods, 5 couplings.
 -Users need a button to click to execute their command (a “run” button)
 -Displays lines of code being executed 
+-We will increase the available amount of memory by implementing a second memory stack capable of holding 2-digit values. It will store the additional 2 digits that follow the original 4-digit word. This memory will be concealed and inaccessible. Values will only be added to it if they exceed 4 digits. They will share the same indexes, but the values will be null. In the case of a 5-digit value, the content in this memory will consist of a single digit. This memory will be included in the display of words in the memory text box. The arithmetic overflow will be updated accordingly.
 
 Non-functional requirement:
 
