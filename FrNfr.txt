@@ -1,25 +1,24 @@
-Functional requirement:
+**Functional Requirements:**
 
--The emulator should be able to load and execute BasicML programs.
--display registers and memory in gui. 
--input area will be open when inputing, and closed when running.
--Clearly explains how commands should be formatted.
--user can step through or run all lines of code.
--refactor functions to be classes with max 5 attributes, 10 methods, 5 couplings.
--Users need a button to click to execute their command (a “run” button)
--Displays lines of code being executed 
--We will increase the available amount of memory by implementing a second memory stack capable of holding 2-digit values. It will store the additional 2 digits that follow the original 4-digit word. This memory will be concealed and inaccessible. Values will only be added to it if they exceed 4 digits. They will share the same indexes, but the values will be null. In the case of a 5-digit value, the content in this memory will consist of a single digit. This memory will be included in the display of words in the memory text box. The arithmetic overflow will be updated accordingly.
+1. The emulator should be able to load and execute BasicML programs.
+2. Display registers and memory in the GUI.
+3. The input area will be open when inputting and closed when running.
+4. Clearly explain how commands should be formatted.
+5. Users can step through or run all lines of code.
+6. Refactor functions to be classes with a maximum of 5 attributes, 10 methods, and 5 couplings.
+7. Users need a button to click to execute their command (a 'run' button).
+8. Display lines of code being executed.
+9. Increase available memory by implementing a second memory stack capable of holding 2-digit values. It will store the additional 2 digits that follow the original 4-digit word. This memory will be concealed and inaccessible. Values will only be added if they exceed 4 digits. They will share the same indexes, but the values will be null. In the case of a 5-digit value, the content in this memory will consist of a single digit. This memory will be included in the display of words in the memory text box. The arithmetic overflow will be updated accordingly.
 
-Non-functional requirement:
+**Non-Functional Requirements:**
 
--User Friendly: The GUI should have an intuitive design that guides users on how to interact with the emulator. Elements such as buttons, input areas, and displays should be self-explanatory.
--Quality of GUI: The GUI should be responsive, ensuring a consistent and optimal user experience across different screen sizes and resolutions.
--Robust Code: In case of an error, the system should provide clear and meaningful error messages to the user, guiding them on how to address the issue.
-
--Using 2's compliment, UVSim should handle 6 digits decimal calculation without expanding the word size (4 digits). You need to revise the FR accordingly.
--Load and store move things between memory and accumulator 
--Read and write move things between memory and user 
--Arithmetic operations work with memory and accumulator 
--Branch operations move you within memory
--If there's an error the error message should be easy to understand to the user, and the error should not break the program.
--Commands broken into instruction, mem location, and word
+1. User-Friendly GUI: The GUI should have an intuitive design that guides users on how to interact with the emulator. Elements such as buttons, input areas, and displays should be self-explanatory.
+2. Quality of GUI: The GUI should be responsive, ensuring a consistent and optimal user experience across different screen sizes and resolutions.
+3. Robust Code: In case of an error, the system should provide clear and meaningful error messages to the user, guiding them on how to address the issue.
+4. Using 2's complement, UVSim should handle 6-digit decimal calculations without expanding the word size (4 digits).
+5. Load and store operations move things between memory and accumulator.
+6. Read and write operations move things between memory and the user.
+7. Arithmetic operations work with memory and accumulator.
+8. Branch operations move within memory.
+9. If there's an error, the error message should be easy to understand for the user, and the error should not break the program.
+10. Commands are broken into instruction, memory location, and word.
