@@ -50,6 +50,16 @@ class TestGui(unittest.TestCase):
         with patch.object(self.app, "button_run", MagicMock()) as mock_button_run:
             self.app.edit_button_click("Run")
         mock_button_run.assert_called_once()
+    
+    # 0: Blake Adamson - Testing that "help" calls iconify method and opens helper window. Date: 12/9
+    # input: Clicking "Help" // expected output: window opened // p/f: p
+    def test_help_button(self):
+        with patch.object(self.app, "iconify", MagicMock()) as mock_iconify:
+            with patch.object(gui2, "Helper", MagicMock()) as mock_helper:
+                self.app.edit_button_click("Help")
+        mock_iconify.assert_called_once()
+        mock_helper.assert_called_once_with("helpEdit.txt", self.app)
+
 
 
 
