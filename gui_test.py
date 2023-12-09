@@ -4,14 +4,12 @@ import gui2
 
 class TestGui(unittest.TestCase):
     
-    # this will run on a separate thread.
-    async def _start_app(self):
-        self.app.mainloop()
-    
-    def setUp(self):
+    # sets up the app
+    @patch("gui2.Editor.mainloop", return_value=None)
+    def setUp(self, mock_mainloop):
         self.app = gui2.Editor()
-        self._start_app()
-    
+
+    # destroys the app
     def tearDown(self):
         self.app.destroy()
     
