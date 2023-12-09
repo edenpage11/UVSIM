@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 import gui2
 
 class TestGui(unittest.TestCase):
@@ -20,6 +20,14 @@ class TestGui(unittest.TestCase):
         expected = 'UVSIM code editor'
         self.assertEqual(title, expected)
     
+    # 01: Blake Adamson - Testing the num_button_click method. Date: 12/9
+    # input: Clicking a number button (e.g., 5) // expected output: Textbox insert called with "end" and "5" // p/f: p
+    def test_num_button_click(self):
+        # Mock the textbox insert method to check if called with correct value
+        with patch.object(self.app.textbox, "insert", MagicMock()) as mock_insert:
+            self.app.num_button_click(5)
+        # Assert that insert method called with expected args
+        mock_insert.assert_called_once_with("end", "5")
 
 if __name__ == '__main__':
     unittest.main() 
