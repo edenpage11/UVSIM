@@ -1,0 +1,38 @@
+Help
+
+Displays:
+    - Memory
+        - The memory is displayed on the left side of the screen. 
+        - You can scroll through the memory to see the memory location on the left and the value stored in that location on the right. 
+        - If the value at that location is a command, it will be labeled with comm followed by the command. 
+        - If the value at that location is a word, it will diplay the word. 
+        - Typing in the memory window will not affect the program. 
+    - Console
+        - The console will display errors if a command has been loaded wrong or an input was invalid. 
+        - The write function will also write to this console. 
+    - Accumulator
+        - The accumulator is the value of the most recent operation.
+        - It will start as None.
+        - The most recent value will be whatever word was manipulated or produced by the most recent command. 
+    - PC 
+        - The PC displays which line of memory you are currently on.
+        - Its value will increase with the Step in and Run buttons. 
+        - Branch commands will change this value.  
+
+Buttons:
+    - Edit Code
+        - The Edit Code button will return to the code editor window and close the current run window.
+    - Run
+        - The Run button will run all lines of code currently loaded into memory.
+    - Step in
+        - The Step in button will run the command on the line that the PC is currently on.
+        - If there is no command loaded in the current memory location, Step in will do nothing.
+    - Halt
+        - The Halt button will stop the program from running if you have pressed Run.
+        - It will halt the program on after completing the line that was actively running. 
+    - Reset
+        - The reset button will close the active window and reopen a new running window.
+        - This will reset the memory to contain only the commands as well as clear the console.
+    - Help
+        - Clicking help will roeopen this window on this page.
+        - The window to edit the program also has a help button.
