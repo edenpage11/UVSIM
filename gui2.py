@@ -304,6 +304,6 @@ class File(ctk.CTkToplevel):
         editor.deiconify()
         self.quit()
 
-
-app = Editor()
-app.mainloop()
+if __name__ == "__main__":
+    app = Editor()
+    app.mainloop()
