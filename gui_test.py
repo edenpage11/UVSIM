@@ -1,14 +1,14 @@
 import unittest
 from unittest.mock import patch, MagicMock
-import gui2
+import gui
 import main
 
 class TestGui(unittest.TestCase):
     
     # sets up the app
-    @patch("gui2.Editor.mainloop", return_value=None)
+    @patch("gui.Editor.mainloop", return_value=None)
     def setUp(self, mock_mainloop):
-        self.app = gui2.Editor()
+        self.app = gui.Editor()
 
     # destroys the app
     def tearDown(self):
@@ -56,7 +56,7 @@ class TestGui(unittest.TestCase):
     # input: Clicking "Help" // expected output: window opened // p/f: p
     def test_help_button(self):
         with patch.object(self.app, "iconify", MagicMock()) as mock_iconify:
-            with patch.object(gui2, "Helper", MagicMock()) as mock_helper:
+            with patch.object(gui, "Helper", MagicMock()) as mock_helper:
                 self.app.edit_button_click("Help")
         mock_iconify.assert_called_once()
         mock_helper.assert_called_once_with("helpEdit.txt", self.app)
