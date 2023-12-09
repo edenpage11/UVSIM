@@ -61,6 +61,12 @@ class TestGui(unittest.TestCase):
         mock_iconify.assert_called_once()
         mock_helper.assert_called_once_with("helpEdit.txt", self.app)
 
+    # 0: Blake Adamson - Test. Date: 12/9
+    # input: Clicking "Newline" // expected output: Newline character in textbox // p/f: p
+    def test_newline_button(self):
+        self.app.textbox.insert("end", "1234")
+        self.app.edit_button_click("Newline")
+        self.assertEqual(self.app.textbox.get("1.0", "end"), "1234\n\n")
 
 
 if __name__ == '__main__':
