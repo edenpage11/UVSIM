@@ -29,15 +29,15 @@ class TestMain(unittest.TestCase):
         self.assertEqual(main.memory[20], -1234)
 
     # 03: Eden Barlow - Testing read throws error when NaN input  11/30
-    # input: 'hello' string // expected output: 'invalid literal for int() with base 10: 'hello'' // p/f: p
+    # input: 'hello' string // expected output: '-----Error:Only input numbers, Try again.-----' // p/f: p
     @patch('builtins.input', side_effect=['hello', '1234'])
     def test_read_bad(self, mock_input):
         # input: 'hello' string
         test_read = main.IOops("1020")
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
             test_read.run()
-        # expected output: 'invalid literal for int() with base 10: 'hello''
-        self.assertIn('invalid literal for int() with base 10:', mock_stdout.getvalue().strip())
+        # expected output: '-----Error:Only input numbers, Try again.-----'
+        self.assertEqual(mock_stdout.getvalue().strip(), '-----Error:Only input numbers, Try again.-----')
 
     # 04: Eden Barlow - testing if the function correctly prints out the positive value at specified memory location date: 11/30
     # input: 1234 int // expected output: 1234 int // p/f: p 
