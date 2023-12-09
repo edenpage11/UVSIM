@@ -141,7 +141,7 @@ class Runner(ctk.CTkToplevel):
         self.PCLabel.grid(row=2, column=2, sticky="w")
 
         #console
-        self.console = ctk.CTkTextbox(self, width=280, height=150, fg_color="#DBDBDB", text_color="#3B8ED0", font=("Bahnschrift", 18), activate_scrollbars=False, border_color="#3B8ED0", border_width=2)
+        self.console = ctk.CTkTextbox(self, width=280, height=150, fg_color="#DBDBDB", text_color="#3B8ED0", font=("Bahnschrift", 18), activate_scrollbars=False, border_color="#3B8ED0", border_width=2, wrap="word")
         self.console.grid(row=1, column=1, columnspan=2)
         if error: 
             self.console.insert("end", error)

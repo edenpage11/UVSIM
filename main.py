@@ -241,8 +241,8 @@ def load_commands(commands):
         elif command[0] == "4":
             memory[index_input] = BRops(command)
         else:
+            error = f"Invalid command on line {index_input}. Command ignored\n"
             index_input -= 1
-            error = f"Invalid command on line {index_input}. Command ignored"
         index_input += 1
     return error
 
