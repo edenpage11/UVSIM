@@ -19,8 +19,6 @@ class IOops(command):
             self.read(self.memLoc)
         elif self.operation[1] == "1":
             self.write(self.memLoc)
-        else: 
-            print("invalid command")
     # 10 read keyboard input into mem location. all function parameters are int's.
     # in: location in memory int  user input string // out: val at LIM == user input int 
     # prompts user to input a number then stores at LIM defined with function call from main
@@ -42,10 +40,10 @@ class IOops(command):
     # in: location in memory int and value at LIM int // out: val at LIM int == to screen
     # takes LIM that was defined with the function call at the beginning and prints the value there
     def write(self, mem):
+        global accumulator
         if int(mem) < 0:
             raise AssertionError
-        word = memory[mem]
-        print(word)
+        accumulator = memory[mem]
         #change from print to send to GUI
 
 class LSops(command):
@@ -58,7 +56,8 @@ class LSops(command):
         elif self.operation[1] == "1":
             self.store(self.memLoc)
         else: 
-            print("invalid command")
+            return "invalid command"
+        return None
     # 20 load from mem location into accumulator.
     # in: location in memory int and value at location int // out: accumulator == word from that LIM int
     # accesses memory at location specified with function call and sets accumulator to hold it
@@ -91,11 +90,13 @@ class arithmetic(command):
         elif self.operation[1] == "3":
             self.multiply(self.memLoc)
         else: 
-            print("invalid command")
+            return "invalid command"
+        return None
     # 30 add accumulator and val in memory.
     # in: location in memory int accumulator int // out: word in acc += word from LIM int
     # adds ints from accumulator and location in memory then stores in the accumulator
     def add(self, mem):
+        error = None
         global accumulator
         y = memory[mem]
         word = accumulator + y
@@ -103,21 +104,34 @@ class arithmetic(command):
         if word > 9999:
             temp = word - 9999
             word = -9999 + temp
+            error = "----- OVERFLOW -----"
+        elif word < -9999:
+            temp = word + 9999
+            word = 9999 + temp
+            error = "----- UNDERFLOW -----"
         accumulator = word
+        return error
 
     # 31 subtract val in memory from accumulator.
     # in: location in memory int accumulator int // out: word in acc -= word from LIM int
     # subtracts ints from LIM from int in accumulator then stores in the accumulator
     def subtract(self, mem):
+        error = None
         global accumulator
         x = accumulator
         y = memory[mem]
         word = x - y
         #need to handle overflow if word < -9999 here - Eden Barlow
-        if word < -9999:
+        if word > 9999:
+            temp = word - 9999
+            word = -9999 + temp
+            error = "----- OVERFLOW -----"
+        elif word < -9999:
             temp = word + 9999
             word = 9999 + temp
+            error = "----- UNDERFLOW -----"
         accumulator = word
+        return error
 
     # 32 divide accumulator by value in memory.
     # in: location in memory int accumulator int // out: word in acc /= word from LIM int
@@ -133,6 +147,7 @@ class arithmetic(command):
     # in: location in memory int accumulator int // out: word in acc *= word from LIM int
     # multiplies ints from accumulator and location in memory then stores in the accumulator
     def multiply(self, mem):
+        error = None
         global accumulator
         x = accumulator
         y = memory[mem]
@@ -141,11 +156,13 @@ class arithmetic(command):
         while word > 9999:
             temp = word - 9999
             word = -9999 + temp
-        #need to handle overflow while word < -9999 here - Eden Barlow
+            error = "----- OVERFLOW -----"
         while word < -9999:
             temp = word + 9999
             word = 9999 + temp
+            error = "----- UNDERFLOW -----"
         accumulator = word
+        return error
 
 class BRops(command):
     def __init__(self, word):
@@ -161,15 +178,15 @@ class BRops(command):
         elif self.operation[1] == "3":
             self.halt()
         else: 
-            print("invalid command")
+            return "invalid command"
+        return None
     # 40 branch to specific location in memory.
     # in: destination int // out: program counter = destination int
     # Go to a specified location in memory (if command is there it will run)
     def branch(self, destination):
         if destination < 0 or destination > 99:
-            # print("Error: You are trying to branch to a location outside of memory.")
-            # halt()
-            pass
+            return "Error: You are trying to branch to a location outside of memory."
+            self.halt()
         else:
             global program_counter
             program_counter = destination
@@ -195,8 +212,8 @@ class BRops(command):
     # when called, the program pauses running because variable is set to false
     def halt(self):
         global program_running
-        print('-----Halting Program-----')
         program_running = False
+        return "-----Halting Program-----"
 
 # run 1 line at a time
 def step_in():
@@ -210,7 +227,9 @@ def step_in():
 
 # take commands from GUI and load them in memory
 def load_commands(commands):
+    error = None
     index_input = 0
+    print(commands)
     global memory
     for command in commands:
         if command[0] == "1":
@@ -222,10 +241,10 @@ def load_commands(commands):
         elif command[0] == "4":
             memory[index_input] = BRops(command)
         else:
+            error = f"Invalid command on line {index_input}. Command ignored\n"
             index_input -= 1
-            print("invalid command")
         index_input += 1
-    return memory
+    return error
 
 def main():
     pass
