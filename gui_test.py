@@ -27,7 +27,7 @@ class TestGui(unittest.TestCase):
             self.app.num_button_click(5)
         mock_insert.assert_called_once_with("end", "5")
 
-    # 0: Blake Adamson - Testing that the edit_button_clear method will clear inputs and textbox. Date: 12/9
+    # 0: Blake Adamson - Test that edit_button_clear method will clear inputs and textbox. Date: 12/9
     # input: Clicking "Clear"// expected output: Inputs list and textbox cleared // p/f: p
     def test_clear_button(self):
         self.app.num_button_click(3) # press 3
@@ -35,7 +35,7 @@ class TestGui(unittest.TestCase):
         self.assertEqual(self.app.inputs, [])
         self.assertEqual(self.app.textbox.get("1.0", "end"), "\n")
 
-    # 0: Blake Adamson - Testing that edit_button_delete deletes inputs. Date: 12/9
+    # 0: Blake Adamson - Test that edit_button_delete removes inputs. Date: 12/9
     # input: Clicking "Delete" // expected output: 12 // p/f: p
     def test_delete_button(self):
         self.app.inputs = [1, 2, 3]
@@ -43,6 +43,14 @@ class TestGui(unittest.TestCase):
         self.app.edit_button_click("Delete")
         self.assertEqual(self.app.inputs, [1, 2])
         self.assertEqual(self.app.textbox.get("1.0", "end"), "12\n")
+
+    # 0: Blake Adamson - Test that "run" button calls "button_run" method once. Date: 12/9
+    # input: Clicking "Run" // expected output: none // p/f: p
+    def test_run_button(self):
+        with patch.object(self.app, "button_run", MagicMock()) as mock_button_run:
+            self.app.edit_button_click("Run")
+        mock_button_run.assert_called_once()
+
 
 
 
