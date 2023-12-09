@@ -21,14 +21,14 @@ class TestGui(unittest.TestCase):
         self.assertEqual(title, expected)
     
     # 0: Blake Adamson - Testing that number buttons get put in textbox. Date: 12/9
-    # input: Clicking the button 5 // expected output: Textbox insert called with "end" and "5" // p/f: p
+    # input: Clicking button "5" // expected output: Textbox insert called with "end" and "5" // p/f: p
     def test_num_button_click(self):
         with patch.object(self.app.textbox, "insert", MagicMock()) as mock_insert:
             self.app.num_button_click(5)
         mock_insert.assert_called_once_with("end", "5")
 
     # 0: Blake Adamson - Testing that the edit_button_clear method will clear inputs and textbox. Date: 12/9
-    # input: Clicking the "Clear" button // expected output: Inputs list cleared, textbox content cleared to newline // p/f: p
+    # input: Clicking "Clear"// expected output: Inputs list and textbox cleared // p/f: p
     def test_clear_button_with_previous_input(self):
         self.app.num_button_click(3) # press 3
         self.app.edit_button_click("Clear") # press clear
