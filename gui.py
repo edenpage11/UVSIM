@@ -1,256 +1,310 @@
-import tkinter as tk
+import customtkinter as ctk
 import main
 
-#functions of gui------------------------------------------------
-showtypecode = True
-inputs = []
-#check functions
-def check_six_word():
-    current_line, _ = map(int, textbox.index(tk.INSERT).split('.'))
-    line_text = textbox.get(f"{current_line}.0", f"{current_line}.end")
+class Editor(ctk.CTk):
+    #editor window class
+    def __init__(self):
+        super().__init__()
+        self.inputs = []
+        self.geometry("600x410")
+        self.title("UVSIM code editor")
+        self.configure(fg_color= "lightblue")
 
-    if len(line_text) >= 4:
-        textbox.insert(tk.INSERT, '\n')
+        # add widgets to app
+        #label for page
+        label = ctk.CTkLabel(self, text="UVSIM Code Editor", fg_color="transparent", text_color="#3B8ED0", font=("Bahnschrift", 24), pady=15)
+        label.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
-def check_type_code():
-    global showtypecode
-    if showtypecode == True:
-        showtypecode = False
-        textbox.delete("1.0", "end")
-    else:
-        pass
+        #number buttons       
+        button_frame = ctk.CTkFrame(self, fg_color="transparent")
+        button_frame.grid(row=1, column=0, padx=10, pady=0)
 
-def validate_input(event):
-    # Get the pressed key
-    pressed_key = event.char
+        for i in range(10):
+            button = ctk.CTkButton(button_frame, height=50, width=85, text=i, font=("Bahnschrift", 18),
+                                    command=lambda v=i: self.num_button_click(v))
+            col = 0
+            if i%3 == 1 or i == 9:
+                col = 1
+            elif i%3 == 2:
+                col = 2
+            button.grid(row=(i//3)+1, column=col, padx=6, pady=10)
 
-    # Check if the pressed key is a digit, the Enter key, or the Backspace key
-    if pressed_key.isdigit() or pressed_key == '\n':
-        check_type_code()
-        check_six_word()
-    elif event.keysym == 'BackSpace' or event.keysym == 'Return':
-        check_type_code()
-    else:
-        # Block the key by returning 'break'
-        return 'break'
+        #edit page function buttons
+        edit_buttons = {"Run":(5, 2), "Clear":(5, 1), "Delete":(5, 0), "Help":(4, 0), "Newline":(4, 2)} # dict key = name value = (r, c)
 
-#number pad
-def button_one():
-    check_type_code()
-    check_six_word()
-    inputs.append(1)
-    textbox.insert("end", "1")
+        for button_name in edit_buttons.keys():
+            button = ctk.CTkButton(button_frame, height=50, width=85, text=button_name, text_color="#DBDBDB", font=("Bahnschrift", 18), 
+                                   command=lambda v=button_name: self.edit_button_click(v))
+            button.grid(row=edit_buttons[button_name][0], column=edit_buttons[button_name][1], padx=6, pady=10)
 
-def button_two():
-    check_type_code()
-    check_six_word()
-    inputs.append(2)
-    textbox.insert("end", "2")
+        self.textbox = ctk.CTkTextbox(self, width=275, height=200, fg_color="#DBDBDB", text_color="#3B8ED0", font=("Bahnschrift", 18), border_color="#3B8ED0", border_width=2)
+        self.textbox.grid(row=1, column=1, sticky="nsew")
 
-def button_three():
-    check_type_code()
-    check_six_word()
-    inputs.append(3)
-    textbox.insert("end", "3")
+        file_button = ctk.CTkButton(self, width=20, corner_radius=0, text="⬆ ⬇", font=("Bahnschrift", 20),  fg_color="#DBDBDB", text_color="#7A7A7A", command=self.file_warning)
+        file_button.grid(row=1, column=1, sticky="se", padx=10, pady=5)
 
-def button_four():
-    check_type_code()
-    check_six_word()
-    inputs.append(4)
-    textbox.insert("end", "4")
+    # add methods to app
 
-def button_five():
-    check_type_code()
-    check_six_word()
-    inputs.append(5)
-    textbox.insert("end", "5")
+    def file_warning(self):
+        #update to impliment file upload and download
+        self.iconify()  
+        warn = File(self)
+        warn.mainloop()
 
-def button_six():
-    check_type_code()
-    check_six_word()
-    inputs.append(6)
-    textbox.insert("end", "6")
+    def num_button_click(self, num):
+        self.inputs.append(num)
+        self.textbox.insert("end", str(num))
 
-def button_seven():
-    check_type_code()
-    check_six_word()
-    inputs.append(7)
-    textbox.insert("end", "7")
+    def edit_button_click(self, value):
+        if value == "Run":
+            self.button_run()
+        elif value == "Clear":
+            self.inputs = []
+            self.textbox.delete("1.0", "end")
+        elif value == "Delete":
+            last_char = self.textbox.get("end-2c", "end-1c")
+            if len(self.inputs) > 0 and not (last_char == "\n"):
+                self.inputs.pop()
+            self.textbox.delete("end-2c")
+        elif value == "Help":
+            self.iconify()  
+            help = Helper("helpEdit.txt", self)
+            help.mainloop()
+        elif value == "Newline":
+            self.button_nl()
+    
+    def button_run(self): 
+        #store commands in main.memory  
+        self.button_nl()
+        commands = []
+        if len(self.inputs) < 4:
+            commands = ["9999"]
+        else:
+            for i in range(0, len(self.inputs), 4):
+                input = self.inputs[i:i+4]
+                command = ""
+                for num in input:
+                    command += str(num)
+                if len(command) == 4:
+                    commands.append(command)
+        errors = main.load_commands(commands)
+        #open new window
+        self.iconify()     
+        display = Runner(self, errors)
+        display.mainloop()
 
-def button_eight():
-    check_type_code()
-    check_six_word()
-    inputs.append(8)
-    textbox.insert("end", "8")
+    def button_nl(self):
+        current_line, _ = map(int, self.textbox.index(ctk.INSERT).split('.'))
+        start = f"{current_line}.0"
+        end = f"{current_line}.end"
+        line_text = self.textbox.get(start, end)
 
-def button_nine():
-    check_type_code()
-    check_six_word()
-    inputs.append(9)
-    textbox.insert("end", "9")
+        if len(line_text) == 4:
+            self.textbox.insert("end", "\n")
+        elif len(line_text) > 4:
+            overflow = len(line_text) - 4
+            for _ in range(overflow):
+                self.inputs.pop()
+            truncated_text = line_text[:4]
+            self.textbox.delete(start, end)
+            self.textbox.insert(start, truncated_text)
+            self.textbox.insert("end", "\n")
 
-def button_zero():
-    check_type_code()
-    check_six_word()
-    inputs.append(0)
-    textbox.insert("end", "0")
+class Runner(ctk.CTkToplevel):
+    #run code window class 
+    def __init__(self, editor, errors):
+        super().__init__()
+        self.geometry("610x420")
+        self.title("UVSIM")
+        self.configure(fg_color= "lightblue")
+        self.editor = editor
 
-#functional buttons
-def button_enter():
-    check_type_code()
-    textbox.insert("end", "\n")
-
-def button_clear():
-    textbox.delete("1.0", "end")
-
-def button_run():
-    global inputs
-    commands = []
-    for i in range(0, len(inputs), 4):
-        input = inputs[i:i+4]
-        command = ""
-        for num in input:
-            command += str(num)
-        commands.append(command)
-    main.load_commands(commands)
-    main.run_all()
-
-
-    #display results
-    global output_textbox
-    output_window = tk.Toplevel(window)
-    output_window.title("Output")
-    output_textbox = tk.Text(output_window, height=10, width=50, font=('Arial', 14))
-    for command in commands:
-        output_textbox.insert(tk.END, f"{command}\n")
-    accumulator = tk.Label(codebox, text='Accumulator', font=('Arial', 20))
-    accvalue = tk.Label(codebox, text=main.accumulator, font=('Arial', 20))
-    accvalue.grid(padx=4, pady=4, row=0, column=0, sticky=tk.W+tk.E)
-    lastlabel = tk.Label(codebox, text='ProgramCounter', font=('Arial', 20))
-    lastlabel.grid(padx=4, pady=4, row=1, column=0, sticky=tk.N)
-    lastvalue = tk.Label(codebox, text=main.program_counter, font=('Arial', 20))
-    lastvalue.grid(padx=4, pady=4, row=1, column=0, sticky=tk.W+tk.E)
-    output_textbox.pack()
-
-    output_textbox.insert(tk.END, f"\nNew PC: {main.program_counter}")
-    output_textbox.insert(tk.END, f"\nAccumulator: {main.accumulator}")
-
-    # for line, value in main.memory: 
-    #     # print line on the left side of the memmenu box
-    #     if isinstance(value, command):
-    #         v_str = value.operation + value.memLoc
-    #         v_int = int(v_str)
-    #     else:
-    #         v_int = value
-    #     # print v_int on the right side of the memmenu box
-
-def button_help():
-    #open Help.txt
-    pass
-
+        # add widgets to app
         
-window = tk.Tk() #window/root object
+        #label for page
+        label = ctk.CTkLabel(self, text="UVSIM Simulator", fg_color="transparent", text_color="#3B8ED0", font=("Bahnschrift", 24), pady=15)
+        label.grid(row=0, column=0, columnspan=3, sticky="nsew")
 
-window.geometry("800x675") #geometry
+        #memory
+        mem_frame = ctk.CTkScrollableFrame(self, width=250, height=340, border_color="#3B8ED0", border_width=2)
+        mem_frame.grid(row=1, column=0, rowspan=3, sticky="nsew", padx=10)
 
-window.title("UV3 Simulator") #title
+        self.indeces = ctk.CTkTextbox(mem_frame, width=123, height=2250, fg_color="transparent", text_color="#3B8ED0", font=("Bahnschrift", 18), activate_scrollbars=False)
+        self.indeces.grid(row=0, column=0)
+        self.values = ctk.CTkTextbox(mem_frame, width=123, height=2250, fg_color="transparent", text_color="#3B8ED0", font=("Bahnschrift", 18), activate_scrollbars=False)
+        self.values.grid(row=0, column=1)
+        
+        #accumulator and program counter
+        self.accLabel = ctk.CTkLabel(self, text=f"Accumulator = {main.accumulator}", fg_color="transparent", text_color="#3B8ED0", font=("Bahnschrift", 18))
+        self.accLabel.grid(row=2, column=1, sticky="w", pady=15, padx=20)
+        self.PCLabel = ctk.CTkLabel(self, text=f"PC = {main.program_counter}", fg_color="transparent", text_color="#3B8ED0", font=("Bahnschrift", 18), pady=15)
+        self.PCLabel.grid(row=2, column=2, sticky="w")
 
-label = tk.Label(window, text="UV3 Simulator", font=('Arial', 18)) 
-label.pack(padx=20, pady=20) #padding
+        #console
+        self.console = ctk.CTkTextbox(self, width=280, height=150, fg_color="#DBDBDB", text_color="#3B8ED0", font=("Bahnschrift", 18), activate_scrollbars=False, border_color="#3B8ED0", border_width=2, wrap="word")
+        self.console.grid(row=1, column=1, columnspan=2)
+        if len(errors) > 0: 
+            for error in errors:
+                self.console.insert("end", error)
+        #text box on row 1 column 1 span 2 columns
+                
+        self.update_mem()
 
-#wireframe parts--------------------------------------------------------
-mainframe = tk.Frame(window)
-memmenu = tk.Frame(mainframe)
-codebox = tk.Frame(mainframe)
-controlbox = tk.Frame(mainframe)
-#wireframe code and styling
-mainframe.columnconfigure(0, weight=1) #mainframe 2x2 2 rows 2 columns
-mainframe.columnconfigure(1, weight=1)
-mainframe.rowconfigure(0, weight=1)
-mainframe.rowconfigure(1, weight=1)
+        #buttons
+        button_frame = ctk.CTkFrame(self, fg_color="transparent")
+        button_frame.grid(row=3, column=1, columnspan=2, padx=10, pady=0, sticky="s")
 
-memmenu.grid(column=0, rowspan=2)
-codebox.grid(column=1, row=0)
-controlbox.grid(column=1, row=1)
+        run_buttons = {"Edit code": (0,0), "Run": (0, 1), "Step in": (0, 2), "Halt": (1, 0), "Reset": (1, 1), "Help": (1, 2)}
+        for button_name in run_buttons.keys():
+            button = ctk.CTkButton(button_frame, height=50, width=85, text=button_name, text_color="#DBDBDB", font=("Bahnschrift", 18), 
+                                   command=lambda v=button_name: self.run_button_click(v))
+            button.grid(row=run_buttons[button_name][0], column=run_buttons[button_name][1], padx=6, pady=10)
+        
+    def show_editor(self):
+        # This method is called when the Runner window is closed
+        self.withdraw()
+        self.editor.deiconify()
+        self.quit()
 
-memmenu.columnconfigure(0, weight=1) #memmenu 1x1 1 column
+    def run_button_click(self, value):
+        if value == "Edit code":
+            self.withdraw()
+            self.editor.deiconify()
+            self.quit()
+        if value == "Run":
+            while main.program_running:
+                self.step_in()
+            self.update_mem()
+        elif value == "Step in":
+            self.step_in()
+            self.update_mem()
+        elif value == "Halt":
+            main.program_running = False
+        elif value == "Reset":
+            main.memory = { i : None for i in range(100) }
+            main.accumulator = None
+            main.program_counter = 0
+            main.program_running = True
+            self.withdraw()
+            self.editor.button_run()
+        elif value == "Help":
+            self.iconify()  
+            help = Helper("helpEdit.txt", self)
+            help.mainloop()
 
-codebox.columnconfigure(0, weight=1) #codebox 2x1 1 rows 2 columnns
-codebox.columnconfigure(1, weight=1)
-codebox.rowconfigure(0, weight=1)
-codebox.rowconfigure(1, weight=1)
+    
+    def get_val(self, val_object):
+        vString = "".join(val_object.operation)
+        memLoc = str(val_object.memLoc)
+        if len(memLoc) < 2:
+            memLoc = "0" + memLoc
+        vString += memLoc
+        return vString
+    
+    def update_mem(self):
+        self.accLabel.configure(text=f"Accumulator = {main.accumulator}")
+        self.PCLabel.configure(text=f"PC = {main.program_counter}")
 
-controlbox.columnconfigure(0, weight=1) #controlbox 4x4 4 rows 4 columns
-controlbox.columnconfigure(1, weight=1)
-controlbox.columnconfigure(2, weight=1)
-controlbox.columnconfigure(3, weight=1)
-controlbox.rowconfigure(0, weight=1)
-controlbox.rowconfigure(1, weight=1)
-controlbox.rowconfigure(2, weight=1)
-controlbox.rowconfigure(3, weight=1)
-controlbox.rowconfigure(4, weight=1)
+        self.indeces.delete("1.0", "end")
+        self.values.delete("1.0", "end")
 
-#memory scroll in memmenu
-def on_scroll(*args):
-    text_box_list.yview(*args)
+        self.indeces.insert("end", "Memory\n")
+        self.values.insert("end", "Value\n")
 
-text_box_list = tk.Listbox(memmenu, selectmode="SINGLE", height=20, width=25, font=('Arial', 18))
-scrollbar = tk.Scrollbar(memmenu, command=on_scroll, width=30)
-scrollbar.pack(side="right", fill="y")
-text_box_list.pack(side="left", padx=5)
+        for index, val in main.memory.items():
+            if isinstance(val, main.command):
+                val = f"comm {self.get_val(val)}"
+            self.indeces.insert("end", f"{index}\n")
+            self.values.insert("end", f"{val}\n")
 
-for i in range(1, 101):
-    text_box_list.insert("end", f"MemoryNull {i}")
-#code boxes and acumulator in code box
-textbox = tk.Text(codebox, height=10, width=15, font=('Arial', 18))
-textbox.grid(padx=4, pady=4, rowspan=2, column=1, sticky=tk.W+tk.E)
-textbox.insert("end", "insert code here") #insert is the function that allows us to change text of a text box
-# Bind the event handler to the Text widget
-textbox.bind('<KeyPress>', validate_input)
+    def step_in(self):
+        # check if we're on a command
+        if not isinstance(main.memory[main.program_counter], main.command):
+            main.program_running = False
+            
+        
+        if main.program_running:
+            self.curr_command = main.memory[main.program_counter]
+            if (isinstance(self.curr_command, main.IOops)):
+                self.errorHandle()
+            else: 
+                error = self.curr_command.run()
+                if error:
+                    self.console.insert("end", "invalid command\n")
+            if (isinstance(self.curr_command, main.BRops)):
+                main.program_counter -= 1
+            main.program_counter += 1
+    
+    def errorHandle(self):
+        try:
+            self.runIO()
+        except:
+            self.console.insert("end", "enter a number\n") 
+            self.errorHandle()       
+    
+    def runIO(self):
+        if self.curr_command.operation[1] == "0":
+            self.read()
+        elif self.curr_command.operation[1] == "1":
+            self.curr_command.run()
+            self.console.insert("end", f"{str(main.accumulator)}\n")
+        else: 
+            self.console.insert("end", "invalid command\n")
 
-accumulator = tk.Label(codebox, text='Accumulator', font=('Arial', 20))
-accumulator.grid(padx=4, pady=4, row=0, column=0, sticky=tk.N)
-accvalue = tk.Label(codebox, text='null', font=('Arial', 20))
-accvalue.grid(padx=4, pady=4, row=0, column=0, sticky=tk.W+tk.E)
-lastlabel = tk.Label(codebox, text='ProgramCounter', font=('Arial', 20))
-lastlabel.grid(padx=4, pady=4, row=1, column=0, sticky=tk.N)
-lastvalue = tk.Label(codebox, text='null', font=('Arial', 20))
-lastvalue.grid(padx=4, pady=4, row=1, column=0, sticky=tk.W+tk.E)
-#buttons in conrol box
-btn1 = tk.Button(controlbox, height=3, width=6, text="1", font=("Arial", 18), command=button_one)
-btn1.grid(padx=2, pady=2, row=0, column=0, sticky=tk.W+tk.E)
-btn2 = tk.Button(controlbox, height=3, width=6, text="2", font=("Arial", 18), command=button_two)
-btn2.grid(padx=2, pady=2, row=0, column=1, sticky=tk.W+tk.E)
-btn3 = tk.Button(controlbox, height=3, width=6, text="3", font=("Arial", 18), command=button_three)
-btn3.grid(padx=2, pady=2, row=0, column=2, sticky=tk.W+tk.E)
+    def read(self):
+        mem = self.curr_command.memLoc
+        dialog = ctk.CTkInputDialog(text=f"enter value to store in memory location {str(mem)}: ", title="Reading Value")
+        user_input = dialog.get_input()
+        main.accumulator = int(user_input)
+        self.curr_command.run()
+        self.update_mem()
 
-btn4 = tk.Button(controlbox, height=3, width=6, text="4", font=("Arial", 18), command=button_four)
-btn4.grid(padx=2, pady=2, row=1, column=0, sticky=tk.W+tk.E)
-btn5 = tk.Button(controlbox, height=3, width=6, text="5", font=("Arial", 18), command=button_five)
-btn5.grid(padx=2, pady=2, row=1, column=1, sticky=tk.W+tk.E)
-btn6 = tk.Button(controlbox, height=3, width=6, text="6", font=("Arial", 18), command=button_six)
-btn6.grid(padx=2, pady=2, row=1, column=2, sticky=tk.W+tk.E)
+class Helper(ctk.CTkToplevel):
+    def __init__(self, helper_file, editor):
+        super().__init__()
+        self.geometry("800x500")
+        self.title("UVSIM Help")
+        self.configure(fg_color="lightblue")
 
-btn7 = tk.Button(controlbox, height=3, width=6, text="7", font=("Arial", 18), command=button_seven)
-btn7.grid(padx=2, pady=2, row=2, column=0, sticky=tk.W+tk.E)
-btn8 = tk.Button(controlbox, height=3, width=6, text="8", font=("Arial", 18), command=button_eight)
-btn8.grid(padx=2, pady=2, row=2, column=1, sticky=tk.W+tk.E)
-btn9 = tk.Button(controlbox, height=3, width=6, text="9", font=("Arial", 18), command=button_nine)
-btn9.grid(padx=2, pady=2, row=2, column=2, sticky=tk.W+tk.E)
+        with open(helper_file, "r") as file:
+            file_content = file.read()
 
-btnclear = tk.Button(controlbox, height=3, width=6, text="Clear", font=("Arial", 18), command=button_clear)
-btnclear.grid(padx=2, pady=2, row=0, column=3, sticky=tk.W+tk.E)
-btnenter = tk.Button(controlbox, height=3, width=6, text="New\nLine", font=("Arial", 18), command=button_enter)
-btnenter.grid(padx=2, pady=2, row=1, column=3, sticky=tk.W+tk.E)
-btn0 = tk.Button(controlbox, height=3, width=6, text="0", font=("Arial", 18), command=button_zero)
-btn0.grid(padx=2, pady=2, row=2, column=3, sticky=tk.W+tk.E)
-btnrun = tk.Button(controlbox, height=3, width=6, text="Run", font=("Arial", 18), command=button_run)
-btnrun.grid(padx=4, pady=2, row=0, column=4, sticky=tk.W+tk.E)
-btnreset = tk.Button(controlbox, height=3, width=6, text="Reset\nMemory", font=("Arial", 18))
-btnreset.grid(padx=4, pady=2, row=1, column=4, sticky=tk.W+tk.E)
-btnhelp= tk.Button(controlbox, height=3, width=6, text="Help", font=("Arial", 18), command=button_help)
-btnhelp.grid(padx=4, pady=2, row=2, column=4, sticky=tk.W+tk.E)
+        # Add a CTkTextbox to display the file content
+        text_box = ctk.CTkTextbox(self, width=800, height=400, fg_color="#DBDBDB", wrap="word", text_color="#3B8ED0", font=("Bahnschrift", 18))
+        text_box.insert("end", file_content)
+        text_box.pack(padx=10, pady=10)
 
-mainframe.pack(fill='x')
+        # # Add a Close button
+        close_button = ctk.CTkButton(self, width=100, height=50, text="Close", text_color="#DBDBDB", font=("Bahnschrift", 18), command=lambda: self.show_editor(editor))
+        close_button.pack(pady=10)
+    
+    def show_editor(self, editor):
+        # This method is called when the Help window is closed
+        self.withdraw()
+        editor.deiconify()
+        self.quit()
 
-window.mainloop()
+class File(ctk.CTkToplevel):
+    def __init__(self, editor):
+        super().__init__()
+        self.geometry("300x250")
+        self.title("UVSIM Help")
+        self.configure(fg_color="lightblue")
+
+        message = ctk.CTkTextbox(self, width=280, height=150, fg_color="#DBDBDB", text_color="#3B8ED0", font=("Bahnschrift", 18), wrap="word")
+        message.insert("end", "Coming soon!\nThis feature is not yet ready, but soon you will be able to upload and download files in the code editor!")
+        message.pack(pady=15)
+
+        # # Add a Close button
+        close_button = ctk.CTkButton(self, width=100, height=50, text="Close", text_color="#DBDBDB", font=("Bahnschrift", 18), command=lambda: self.show_editor(editor))
+        close_button.pack()
+    
+    def show_editor(self, editor):
+        # This method is called when the File window is closed
+        self.withdraw()
+        editor.deiconify()
+        self.quit()
+
+if __name__ == "__main__":
+    app = Editor()
+    app.mainloop()
