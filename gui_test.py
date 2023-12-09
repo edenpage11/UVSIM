@@ -21,6 +21,7 @@ class TestGui(unittest.TestCase):
         title = self.app.winfo_toplevel().title()
         expected = 'UVSIM code editor'
         self.assertEqual(title, expected)
+    
 
 if __name__ == '__main__':
     unittest.main() 
