@@ -51,15 +51,15 @@ class TestMain(unittest.TestCase):
 
 
     # 05: Eden Barlow - testing if the function correctly prints out the negative value at specified memory location date: 11/30
-    # input: -1234 int // expected output: -1234 str // p/f: p
+    # input: -1234 int // expected output: -1234 int // p/f: p
     def test_write_neg(self):
         # input: -1234 int
         main.memory[15] = -1234
         test_write = main.IOops('1115')
-        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            test_write.run()
-        # expected output: -1234 str
-        self.assertEqual(mock_stdout.getvalue().strip(), '-1234')
+        test_write.run()
+        # expected output: -1234 int
+        self.assertEqual(main.memory[15], -1234)
+
     
     # 06: Eden Barlow - Testing write raises an error when attempting to access an invalid memory location. date: 9/25
     # input: none // expected output: AssertionError // p/f: p
