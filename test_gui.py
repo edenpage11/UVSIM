@@ -14,13 +14,6 @@ class TestGui(unittest.TestCase):
     def tearDown(self):
         self.app.destroy()
     
-    # 0: Blake Adamson - Testing that GUI correctly displays title. Date:12/9
-    # input: expected string // expected output: UVSIM code editor // p/f: p
-    def test_title(self):
-        title = self.app.winfo_toplevel().title()
-        expected = 'UVSIM code editor'
-        self.assertEqual(title, expected)
-    
     # 0: Blake Adamson - Testing that number buttons get put in textbox. Date: 12/9
     # input: Clicking button "5" // expected output: Textbox insert called with "end" and "5" // p/f: p
     def test_num_button(self):
@@ -72,12 +65,28 @@ class TestGui(unittest.TestCase):
     # input: Clicking "File Warning" // expected output: window opened // p/f: p
     def test_file_warning(self):
         with patch.object(self.app, "iconify", MagicMock()) as mock_iconify:
-            with patch.object(gui2, "File", MagicMock()) as mock_file:
+            with patch.object(gui, "File", MagicMock()) as mock_file:
                 self.app.file_warning()
         mock_iconify.assert_called_once()
         mock_file.assert_called_once_with(self.app)
 
+    # 0: Blake Adamson - Test that runIO method in Runner performes given operation. Date: 12/9
+    # input: RunIO op // expected output: "Write" // p/f: p
+    def test_runIO(self):
+        # Create a Runner instance
+        with patch.object(gui, "Runner") as mock_runner:
+            runner_instance = mock_runner.return_value
+            # run io op
+            self.app.curr_command = MagicMock()
+            self.app.curr_command.operation = ["IO", "0"]
+            runner_instance.runIO()
 
+    # 0: Blake Adamson - Testing that GUI correctly displays title. Date:12/9
+    # input: expected string // expected output: UVSIM code editor // p/f: p
+    def test_title(self):
+        title = self.app.winfo_toplevel().title()
+        expected = 'UVSIM code editor'
+        self.assertEqual(title, expected)
 
 if __name__ == '__main__':
     unittest.main() 
