@@ -15,7 +15,7 @@ class Editor(ctk.CTk):
         label = ctk.CTkLabel(self, text="UVSIM Code Editor", fg_color="transparent", text_color="#3B8ED0", font=("Bahnschrift", 24), pady=15)
         label.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
-        #number buttons        
+        #number buttons       
         button_frame = ctk.CTkFrame(self, fg_color="transparent")
         button_frame.grid(row=1, column=0, padx=10, pady=0)
 
@@ -62,7 +62,8 @@ class Editor(ctk.CTk):
             self.inputs = []
             self.textbox.delete("1.0", "end")
         elif value == "Delete":
-            if len(self.inputs) > 0:
+            last_char = self.textbox.get("end-2c", "end-1c")
+            if len(self.inputs) > 0 and not (last_char == "\n"):
                 self.inputs.pop()
             self.textbox.delete("end-2c")
         elif value == "Help":
@@ -84,12 +85,12 @@ class Editor(ctk.CTk):
                 command = ""
                 for num in input:
                     command += str(num)
-                commands.append(command)
-        main.load_commands(commands)
-        
+                if len(command) == 4:
+                    commands.append(command)
+        error = main.load_commands(commands)
         #open new window
         self.iconify()     
-        display = Runner(self)
+        display = Runner(self, error)
         display.mainloop()
 
     def button_nl(self):
@@ -111,7 +112,7 @@ class Editor(ctk.CTk):
 
 class Runner(ctk.CTkToplevel):
     #run code window class 
-    def __init__(self, editor):
+    def __init__(self, editor, error):
         super().__init__()
         self.geometry("610x420")
         self.title("UVSIM")
@@ -142,6 +143,8 @@ class Runner(ctk.CTkToplevel):
         #console
         self.console = ctk.CTkTextbox(self, width=280, height=150, fg_color="#DBDBDB", text_color="#3B8ED0", font=("Bahnschrift", 18), activate_scrollbars=False, border_color="#3B8ED0", border_width=2)
         self.console.grid(row=1, column=1, columnspan=2)
+        if error: 
+            self.console.insert("end", error)
         #text box on row 1 column 1 span 2 columns
                 
         self.update_mem()
@@ -215,42 +218,45 @@ class Runner(ctk.CTkToplevel):
 
     def step_in(self):
         # check if we're on a command
-        try:
-            if not isinstance(main.memory[main.program_counter], main.command):
-                main.program_running = False
+        if not isinstance(main.memory[main.program_counter], main.command):
+            main.program_running = False
             
-            if main.program_running:
-                self.curr_command = main.memory[main.program_counter]
-                if isinstance(self.curr_command, main.IOops):
-                    self.runIO()
-                else:
-                    self.curr_command.run()
-                main.program_counter += 1
-        except TypeError:
-            self.console.insert("end", "\n-----Error:Only input numbers, Try again.-----\n")
-            self.step_in()
+        
+        if main.program_running:
+            self.curr_command = main.memory[main.program_counter]
+            if (isinstance(self.curr_command, main.IOops)):
+                self.errorHandle()
+            else: 
+                error = self.curr_command.run()
+                if error:
+                    self.console.insert("end", "invalid command\n")
+            if (isinstance(self.curr_command, main.BRops)):
+                main.program_counter -= 1
+            main.program_counter += 1
+    
+    def errorHandle(self):
+        try:
+            self.runIO()
+        except:
+            self.console.insert("end", "enter a number\n") 
+            self.errorHandle()       
     
     def runIO(self):
         if self.curr_command.operation[1] == "0":
             self.read()
-        else:
-            self.write()
+        elif self.curr_command.operation[1] == "1":
+            self.curr_command.run()
+            self.console.insert("end", f"{str(main.accumulator)}\n")
+        else: 
+            self.console.insert("end", "invalid command\n")
 
     def read(self):
         mem = self.curr_command.memLoc
-        self.console.insert("end", f"enter value to store in memory location {str(mem)}: ")
-        self.console.bind("<Return>", self.handle_enter)
-
-
-    def handle_enter(self, event):
-        user_input = self.console.get("end-5c", "end-1c")
-        main.accumulator = user_input
+        dialog = ctk.CTkInputDialog(text=f"enter value to store in memory location {str(mem)}: ", title="Reading Value")
+        user_input = dialog.get_input()
+        main.accumulator = int(user_input)
         self.curr_command.run()
         self.update_mem()
-
-    def write(self, mem):
-        print("write")
-        pass
 
 class Helper(ctk.CTkToplevel):
     def __init__(self, helper_file, editor):
