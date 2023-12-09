@@ -118,6 +118,10 @@ class Runner(ctk.CTkToplevel):
         self.title("UVSIM")
         self.configure(fg_color= "lightblue")
         self.editor = editor
+        self.protocol("WM_DELETE_WINDOW", lambda: self.show_editor())
+        main.program_running = True
+        main.accumulator = None
+        main.program_counter = 0
 
         # add widgets to app
         
@@ -174,17 +178,17 @@ class Runner(ctk.CTkToplevel):
             self.editor.deiconify()
             self.quit()
         if value == "Run":
+            main.program_running = True
             self.run_continuously()
         elif value == "Step in":
+            main.program_running = True
             self.step_in()
             self.update_mem()
         elif value == "Halt":
+            self.console.insert("end", "----- Halting the program -----\n")
             main.program_running = False
         elif value == "Reset":
             main.memory = { i : None for i in range(100) }
-            main.accumulator = None
-            main.program_counter = 0
-            main.program_running = True
             self.withdraw()
             self.editor.button_run()
         elif value == "Help":
@@ -222,7 +226,6 @@ class Runner(ctk.CTkToplevel):
         if not isinstance(main.memory[main.program_counter], main.command):
             main.program_running = False
             
-        
         if main.program_running:
             self.curr_command = main.memory[main.program_counter]
             if (isinstance(self.curr_command, main.IOops)):
@@ -230,7 +233,7 @@ class Runner(ctk.CTkToplevel):
             else: 
                 error = self.curr_command.run()
                 if error:
-                    self.console.insert("end", "invalid command\n")
+                    self.console.insert("end", f"{error}\n")
             if (isinstance(self.curr_command, main.BRops)):
                 main.program_counter -= 1
             main.program_counter += 1
@@ -246,7 +249,7 @@ class Runner(ctk.CTkToplevel):
         try:
             self.runIO()
         except:
-            self.console.insert("end", "enter a number\n") 
+            self.console.insert("end", "enter a 6 digit max number\n") 
             self.errorHandle()       
     
     def runIO(self):
@@ -262,6 +265,11 @@ class Runner(ctk.CTkToplevel):
         mem = self.curr_command.memLoc
         dialog = ctk.CTkInputDialog(text=f"enter value to store in memory location {str(mem)}: ", title="Reading Value")
         user_input = dialog.get_input()
+        if user_input == None:
+            self.run_button_click("Halt")
+            return
+        if len(user_input) > 6:
+            user_input = user_input[0:6]
         main.accumulator = int(user_input)
         self.curr_command.run()
         self.update_mem()

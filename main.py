@@ -81,16 +81,16 @@ class arithmetic(command):
 
     def run(self):
         if self.operation[1] == "0":
-            self.add(self.memLoc)
+            error = self.add(self.memLoc)
         elif self.operation[1] == "1":
-            self.subtract(self.memLoc)
+            error = self.subtract(self.memLoc)
         elif self.operation[1] == "2":
-            self.divide(self.memLoc)
+            error = self.divide(self.memLoc)
         elif self.operation[1] == "3":
-            self.multiply(self.memLoc)
+            error = self.multiply(self.memLoc)
         else: 
-            return "invalid command"
-        return None
+            error = "invalid command"
+        return error
     # 30 add accumulator and val in memory.
     # in: location in memory int accumulator int // out: word in acc += word from LIM int
     # adds ints from accumulator and location in memory then stores in the accumulator
@@ -100,11 +100,11 @@ class arithmetic(command):
         y = memory[mem]
         word = accumulator + y
         # need to handle overflow if word > 9999 here - Eden Barlow
-        if word > 9999:
+        while word > 9999:
             temp = word - 9999
             word = -9999 + temp
             error = "----- OVERFLOW -----"
-        elif word < -9999:
+        while word < -9999:
             temp = word + 9999
             word = 9999 + temp
             error = "----- UNDERFLOW -----"
@@ -121,11 +121,11 @@ class arithmetic(command):
         y = memory[mem]
         word = x - y
         #need to handle overflow if word < -9999 here - Eden Barlow
-        if word > 9999:
+        while word > 9999:
             temp = word - 9999
             word = -9999 + temp
             error = "----- OVERFLOW -----"
-        elif word < -9999:
+        while word < -9999:
             temp = word + 9999
             word = 9999 + temp
             error = "----- UNDERFLOW -----"
