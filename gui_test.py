@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 import gui2
+import main
 
 class TestGui(unittest.TestCase):
     
@@ -51,7 +52,7 @@ class TestGui(unittest.TestCase):
             self.app.edit_button_click("Run")
         mock_button_run.assert_called_once()
     
-    # 0: Blake Adamson - Testing that "help" calls iconify method and opens helper window. Date: 12/9
+    # 0: Blake Adamson - Test that "help" calls iconify method and opens helper window. Date: 12/9
     # input: Clicking "Help" // expected output: window opened // p/f: p
     def test_help_button(self):
         with patch.object(self.app, "iconify", MagicMock()) as mock_iconify:
@@ -59,9 +60,6 @@ class TestGui(unittest.TestCase):
                 self.app.edit_button_click("Help")
         mock_iconify.assert_called_once()
         mock_helper.assert_called_once_with("helpEdit.txt", self.app)
-
-
-
 
 
 
