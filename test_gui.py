@@ -68,6 +68,16 @@ class TestGui(unittest.TestCase):
         self.app.edit_button_click("Newline")
         self.assertEqual(self.app.textbox.get("1.0", "end"), "1234\n\n")
 
+    # 0: Blake Adamson - Test that file_warning triggers iconify and opens window. Date: 12/9
+    # input: Clicking "File Warning" // expected output: window opened // p/f: p
+    def test_file_warning(self):
+        with patch.object(self.app, "iconify", MagicMock()) as mock_iconify:
+            with patch.object(gui2, "File", MagicMock()) as mock_file:
+                self.app.file_warning()
+        mock_iconify.assert_called_once()
+        mock_file.assert_called_once_with(self.app)
+
+
 
 if __name__ == '__main__':
     unittest.main() 
