@@ -172,9 +172,7 @@ class Runner(ctk.CTkToplevel):
             self.editor.deiconify()
             self.quit()
         if value == "Run":
-            while main.program_running:
-                self.step_in()
-            self.update_mem()
+            self.run_continuously()
         elif value == "Step in":
             self.step_in()
             self.update_mem()
@@ -189,7 +187,7 @@ class Runner(ctk.CTkToplevel):
             self.editor.button_run()
         elif value == "Help":
             self.iconify()  
-            help = Helper("helpEdit.txt", self)
+            help = Helper("helpRun.txt", self)
             help.mainloop()
 
     
@@ -234,6 +232,13 @@ class Runner(ctk.CTkToplevel):
             if (isinstance(self.curr_command, main.BRops)):
                 main.program_counter -= 1
             main.program_counter += 1
+    
+    def run_continuously(self):
+        self.step_in()
+        if main.program_running:
+            self.after(10, self.run_continuously)  # Schedule the next step_in after 10 milliseconds
+        else:
+            self.update_mem() 
     
     def errorHandle(self):
         try:
