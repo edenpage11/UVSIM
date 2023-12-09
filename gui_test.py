@@ -15,9 +15,11 @@ class TestGui(unittest.TestCase):
     def tearDown(self):
         self.app.destroy()
     
-    def test_startup(self):
+    # 01: Blake Adamson - Testing that startup has correct title. Date:12/9
+    # input: expected string // expected output: UVSIM code editor // p/f: p
+    def test_title(self):
         title = self.app.winfo_toplevel().title()
-        expected = 'The Application'
+        expected = 'UVSIM code editor'
         self.assertEqual(title, expected)
 
 if __name__ == '__main__':
