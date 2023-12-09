@@ -87,10 +87,10 @@ class Editor(ctk.CTk):
                     command += str(num)
                 if len(command) == 4:
                     commands.append(command)
-        error = main.load_commands(commands)
+        errors = main.load_commands(commands)
         #open new window
         self.iconify()     
-        display = Runner(self, error)
+        display = Runner(self, errors)
         display.mainloop()
 
     def button_nl(self):
@@ -112,7 +112,7 @@ class Editor(ctk.CTk):
 
 class Runner(ctk.CTkToplevel):
     #run code window class 
-    def __init__(self, editor, error):
+    def __init__(self, editor, errors):
         super().__init__()
         self.geometry("610x420")
         self.title("UVSIM")
@@ -143,8 +143,9 @@ class Runner(ctk.CTkToplevel):
         #console
         self.console = ctk.CTkTextbox(self, width=280, height=150, fg_color="#DBDBDB", text_color="#3B8ED0", font=("Bahnschrift", 18), activate_scrollbars=False, border_color="#3B8ED0", border_width=2, wrap="word")
         self.console.grid(row=1, column=1, columnspan=2)
-        if error: 
-            self.console.insert("end", error)
+        if len(errors) > 0: 
+            for error in errors:
+                self.console.insert("end", error)
         #text box on row 1 column 1 span 2 columns
                 
         self.update_mem()

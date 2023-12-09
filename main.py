@@ -9,7 +9,6 @@ class command:
         self.operation = word[:2]
         self.memLoc = int(word[2:])
 
-
 class IOops(command):
     def __init__(self, word):
         command.__init__(self, word)
@@ -19,6 +18,7 @@ class IOops(command):
             self.read(self.memLoc)
         elif self.operation[1] == "1":
             self.write(self.memLoc)
+
     # 10 read keyboard input into mem location. all function parameters are int's.
     # in: location in memory int  user input string // out: val at LIM == user input int 
     # prompts user to input a number then stores at LIM defined with function call from main
@@ -44,7 +44,6 @@ class IOops(command):
         if int(mem) < 0:
             raise AssertionError
         accumulator = memory[mem]
-        #change from print to send to GUI
 
 class LSops(command):
     def __init__(self, word):
@@ -227,24 +226,23 @@ def step_in():
 
 # take commands from GUI and load them in memory
 def load_commands(commands):
-    error = None
+    errors = []
     index_input = 0
-    print(commands)
     global memory
     for command in commands:
-        if command[0] == "1":
+        if (command[0] == "1") and (command[1] == "0" or command[1] == "1"):
             memory[index_input] = IOops(command)
-        elif command[0] == "2":
+        elif (command[0] == "2") and (command[1] == "0" or command[1] == "1"):
             memory[index_input] = LSops(command)
-        elif command[0] == "3":
+        elif (command[0] == "3") and (command[1] == "0" or command[1] == "1" or command[1] == "2" or command[1] == "3"):
             memory[index_input] = arithmetic(command)
-        elif command[0] == "4":
+        elif (command[0] == "4") and (command[1] == "0" or command[1] == "1" or command[1] == "2" or command[1] == "3"):
             memory[index_input] = BRops(command)
         else:
-            error = f"Invalid command on line {index_input}. Command ignored\n"
+            errors.append(f"Invalid command on line {index_input}. Command ignored\n")
             index_input -= 1
         index_input += 1
-    return error
+    return errors
 
 def main():
     pass
