@@ -146,9 +146,11 @@ class Runner(ctk.CTkToplevel):
         if len(errors) > 0: 
             for error in errors:
                 self.console.insert("end", error)
-        #text box on row 1 column 1 span 2 columns
                 
         self.update_mem()
+
+        clear_console = ctk.CTkButton(self, width=20, corner_radius=0, text="X", font=("Bahnschrift", 20),  fg_color="#DBDBDB", text_color="#7A7A7A", command=lambda: self.console.delete("1.0", "end"))
+        clear_console.grid(row=1, column=1, columnspan=2, sticky="ne", padx=20, pady=5)
 
         #buttons
         button_frame = ctk.CTkFrame(self, fg_color="transparent")
