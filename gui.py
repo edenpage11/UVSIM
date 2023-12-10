@@ -291,7 +291,7 @@ class Helper(ctk.CTkToplevel):
         text_box.pack(padx=10, pady=10)
 
         # # Add a Close button
-        close_button = ctk.CTkButton(self, width=100, height=50, text="Close", text_color="#DBDBDB", font=("Bahnschrift", 18), command=lambda: self.show_editor)
+        close_button = ctk.CTkButton(self, width=100, height=50, text="Close", text_color="#DBDBDB", font=("Bahnschrift", 18), command=lambda: self.show_editor())
         close_button.pack(pady=10)
     
     def show_editor(self):
@@ -313,7 +313,7 @@ class File(ctk.CTkToplevel):
         message.pack(pady=15)
 
         # # Add a Close button
-        close_button = ctk.CTkButton(self, width=100, height=50, text="Close", text_color="#DBDBDB", font=("Bahnschrift", 18), command=lambda: self.show_editor(editor))
+        close_button = ctk.CTkButton(self, width=100, height=50, text="Close", text_color="#DBDBDB", font=("Bahnschrift", 18), command=lambda: self.show_editor())
         close_button.pack()
     
     def show_editor(self):
