@@ -280,6 +280,7 @@ class Helper(ctk.CTkToplevel):
         self.geometry("800x500")
         self.title("UVSIM Help")
         self.configure(fg_color="lightblue")
+        self.editor = editor
 
         with open(helper_file, "r") as file:
             file_content = file.read()
@@ -290,13 +291,13 @@ class Helper(ctk.CTkToplevel):
         text_box.pack(padx=10, pady=10)
 
         # # Add a Close button
-        close_button = ctk.CTkButton(self, width=100, height=50, text="Close", text_color="#DBDBDB", font=("Bahnschrift", 18), command=lambda: self.show_editor(editor))
+        close_button = ctk.CTkButton(self, width=100, height=50, text="Close", text_color="#DBDBDB", font=("Bahnschrift", 18), command=lambda: self.show_editor)
         close_button.pack(pady=10)
     
-    def show_editor(self, editor):
+    def show_editor(self):
         # This method is called when the Help window is closed
         self.withdraw()
-        editor.deiconify()
+        self.editor.deiconify()
         self.quit()
 
 class File(ctk.CTkToplevel):
@@ -305,6 +306,7 @@ class File(ctk.CTkToplevel):
         self.geometry("300x250")
         self.title("UVSIM Help")
         self.configure(fg_color="lightblue")
+        self.editor = editor
 
         message = ctk.CTkTextbox(self, width=280, height=150, fg_color="#DBDBDB", text_color="#3B8ED0", font=("Bahnschrift", 18), wrap="word")
         message.insert("end", "Coming soon!\nThis feature is not yet ready, but soon you will be able to upload and download files in the code editor!")
@@ -314,10 +316,10 @@ class File(ctk.CTkToplevel):
         close_button = ctk.CTkButton(self, width=100, height=50, text="Close", text_color="#DBDBDB", font=("Bahnschrift", 18), command=lambda: self.show_editor(editor))
         close_button.pack()
     
-    def show_editor(self, editor):
+    def show_editor(self):
         # This method is called when the File window is closed
         self.withdraw()
-        editor.deiconify()
+        self.editor.deiconify()
         self.quit()
 
 if __name__ == "__main__":
