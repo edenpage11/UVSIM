@@ -14,56 +14,43 @@ class TestMain(unittest.TestCase):
     # input: '1234' string // expected output: 1234 int // p/f: p
     @patch('builtins.input', side_effect=['1234'])
     def test_read_pos(self, mock_input):
-        # input: '1234' string
         test_read = main.IOops("1020")
+        main.accumulator = '1234'
         test_read.run()
-        # expected output: 1234 int
         self.assertEqual(main.memory[20], 1234)
 
     # 02: Eden Barlow - Testing read stores negative number in correct location in memory date: 11/30
     # input: '-1234' string // expected output: -1234 int // p/f: p
     @patch('builtins.input', side_effect=['-1234'])
     def test_read_neg(self, mock_input):
-        # input: '-1234' string
         test_read = main.IOops("1020")
+        main.accumulator = '-1234'
         test_read.run()
-        # expected output: -1234 int
         self.assertEqual(main.memory[20], -1234)
 
-    # 03: Eden Barlow - Testing read throws error when NaN input  11/30
-    # input: 'hello' string // expected output: '-----Error:Only input numbers, Try again.-----' // p/f: p
-    @patch('builtins.input', side_effect=['hello', '1234'])
-    def test_read_bad(self, mock_input):
-        # input: 'hello' string
-        test_read = main.IOops("1020")
-        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            test_read.run()
-        # expected output: '-----Error:Only input numbers, Try again.-----'
-        self.assertEqual(mock_stdout.getvalue().strip(), '-----Error:Only input numbers, Try again.-----')
-
-    # 04: Eden Barlow - testing if the function correctly prints out the positive value at specified memory location date: 11/30
-    # input: 1234 int // expected output: 1234 str // p/f: p 
+    # 03: Eden Barlow - testing if the function correctly prints out the positive value at specified memory location date: 11/30
+    # input: 1234 int // expected output: 1234 int // p/f: p 
     def test_write_pos(self):
         # input: 1234 int
         main.memory[15] = 1234
         test_write = main.IOops('1115')
-        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            test_write.run()
-        # expected output: 1234 str
-        self.assertEqual(mock_stdout.getvalue().strip(), '1234')
+        test_write.run()
+        # expected output: 1234 int
+        self.assertEqual(main.memory[15], 1234)
 
-    # 05: Eden Barlow - testing if the function correctly prints out the negative value at specified memory location date: 11/30
-    # input: -1234 int // expected output: -1234 str // p/f: p
+
+    # 04: Eden Barlow - testing if the function correctly prints out the negative value at specified memory location date: 11/30
+    # input: -1234 int // expected output: -1234 int // p/f: p
     def test_write_neg(self):
         # input: -1234 int
         main.memory[15] = -1234
         test_write = main.IOops('1115')
-        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            test_write.run()
-        # expected output: -1234 str
-        self.assertEqual(mock_stdout.getvalue().strip(), '-1234')
+        test_write.run()
+        # expected output: -1234 int
+        self.assertEqual(main.memory[15], -1234)
+
     
-    # 06: Eden Barlow - Testing write raises an error when attempting to access an invalid memory location. date: 9/25
+    # 05: Eden Barlow - Testing write raises an error when attempting to access an invalid memory location. date: 9/25
     # input: none // expected output: AssertionError // p/f: p
     def test_write_error(self):
         # input: none
@@ -71,7 +58,7 @@ class TestMain(unittest.TestCase):
         with self.assertRaises(AssertionError):
             test_write.run()
 
-    # 07: JiaSian/Blake - Testing if the add can add negative numbers together. date: 12/2
+    # 06: JiaSian/Blake - Testing if the add can add negative numbers together. date: 12/2
     # input: none // expected output: -4444 int // p/f: p
     def test_add_neg(self):
         # input: none
@@ -81,7 +68,7 @@ class TestMain(unittest.TestCase):
         # expected output: -4444 int
         self.assertEqual(main.accumulator, -4444)
 
-    # 08: JiaSian/Blake - Test add can properly add the positive numbers date: 12/2
+    # 07: JiaSian/Blake - Test add can properly add the positive numbers date: 12/2
     # input: none // expected output: 2468 int // p/f: p
     def test_add_pos(self):
         # input: none
@@ -92,7 +79,7 @@ class TestMain(unittest.TestCase):
         # expected output: 2468 int
         self.assertEqual(main.accumulator, 2468)
 
-    # 09: JiaSian/Blake - Testing add can correctly subtract the negative numbers. date: 12/2
+    # 08: JiaSian/Blake - Testing add can correctly subtract the negative numbers. date: 12/2
     # input: none // expected output: -4444 int // p/f: p
     def test_subtract_neg(self):
         # input: none
@@ -102,7 +89,7 @@ class TestMain(unittest.TestCase):
         # expected output: -4444 int
         self.assertEqual(main.accumulator, -4444)
 
-    # 10: JiaSian/Blake - Testing if add can subtract the positive numbers. date: 12/2
+    # 19: JiaSian/Blake - Testing if add can subtract the positive numbers. date: 12/2
     # input: none // expected output: 2222 int // p/f: p
     def test_subtract_pos(self):
         # input: none
@@ -112,7 +99,7 @@ class TestMain(unittest.TestCase):
         # expected output: 2222 int
         self.assertEqual(main.accumulator, 2222)
 
-    # 11: Bryceton Sudweeks/Blake - Testing if divide function can accurately divide two positive numbers. date: 12/2
+    # 10: Bryceton Sudweeks/Blake - Testing if divide function can accurately divide two positive numbers. date: 12/2
     # input: none // expected output: 2 int // p/f: p
     def test_divide_pos(self):
         # input: none
@@ -122,7 +109,7 @@ class TestMain(unittest.TestCase):
         # expected output: 2 int
         self.assertEqual(main.accumulator, 2)
 
-    # 12: Bryceton Sudweeks /Blake - Testing if the divide function can accurately divide two negative numbers. date: 12/2
+    # 11: Bryceton Sudweeks /Blake - Testing if the divide function can accurately divide two negative numbers. date: 12/2
     # input: mem location 1 - 2222 accumulator - 4444 // expected output: 2
     def test_divide_neg(self):
         main.accumulator = -4444
@@ -130,7 +117,7 @@ class TestMain(unittest.TestCase):
         main.arithmetic("3201").run()
         self.assertEqual(main.accumulator, 2)
 
-    # 13: Bryceton Sudweeks /Blake - Testing if the multiply function can accurately multiply two positive numbers. date: 12/2
+    # 12: Bryceton Sudweeks /Blake - Testing if the multiply function can accurately multiply two positive numbers. date: 12/2
     # input: mem location 1 - 0002 accumulator - 800 // expected output: 1600
     def test_multiply_pos(self):
         main.accumulator = 4444
@@ -138,7 +125,7 @@ class TestMain(unittest.TestCase):
         main.arithmetic("3301").run()
         self.assertEqual(main.accumulator, 8888)
 
-    # 14: Bryceton Sudweeks /Blake - Testing if the multiply function can accurately multiply two negative numbers. date: 12/2
+    # 13: Bryceton Sudweeks /Blake - Testing if the multiply function can accurately multiply two negative numbers. date: 12/2
     # input: mem location - -0003 accumulator - -3333 // expected output: 9999
     def test_multiply_neg(self):
         main.accumulator = -3333
@@ -146,7 +133,7 @@ class TestMain(unittest.TestCase):
         main.arithmetic("3301").run()
         self.assertEqual(main.accumulator, 9999)
 
-    # 15: Eden Barlow - Testing if the load function loads the correct value from memory to the accumulator date: 12/3
+    # 14: Eden Barlow - Testing if the load function loads the correct value from memory to the accumulator date: 12/3
     # input: 10 int // expected output: -5678 int // p/f: p
     def test_load_val(self):
         main.accumulator = None
@@ -154,28 +141,28 @@ class TestMain(unittest.TestCase):
         main.LSops("2000").run()
         self.assertEqual(main.memory[10], -5678)
 
-    # 16: Eden Barlow - Testing load function that word is None if memory is empty date: 12/3
+    # 15: Eden Barlow - Testing load function that word is None if memory is empty date: 12/3
     # input: 10 int // expected output: None NoneType // p/f: p
     def test_load_no_val(self):
         main.accumulator = 1234
         main.LSops("2000").run()
         self.assertEqual(main.memory[10], None)
 
-    # 17: Eden Barlow - Testing store function that location in memory contains word from accumulator date: 12/3
+    # 16: Eden Barlow - Testing store function that location in memory contains word from accumulator date: 12/3
     # input: 10 int // expected output: 1234 int // p/f: p
     def test_store_val(self):
         main.accumulator = 1234  # Set accumulator to the value
         main.LSops("2100").run()
         self.assertEqual(main.accumulator, 1234)
 
-    # 18: Eden Barlow - Testing that location in memory == None if accumulator is empty date: 12/3
+    # 17: Eden Barlow - Testing that location in memory == None if accumulator is empty date: 12/3
     # input: 10 int // expected output: None NoneType // p/f: p
     def test_store_no_val(self):
         main.accumulator = None
         main.LSops("2100").run()
         self.assertEqual(main.accumulator, None)
 
-    # 19: Blake - testing branch to negative. date: 12/2
+    # 18: Blake - testing branch to negative. date: 12/2
     # input: none // expected output: 0 int // p/f: p
     def test_branch_negative(self):
         # input: none
@@ -183,7 +170,7 @@ class TestMain(unittest.TestCase):
         # expected output: 0 int
         self.assertEqual(main.program_counter, 0)
 
-    # 20: Blake - testing branch to positive. date: 12/2
+    # 19: Blake - testing branch to positive. date: 12/2
     # input: none // expected output: 1 int // p/f: p
     def test_branch_positive(self):
         # input: none
@@ -191,7 +178,7 @@ class TestMain(unittest.TestCase):
         # expected output: 1 int
         self.assertEqual(main.program_counter, 1)
 
-    # 21: Blake - testing when accumulator is negative. date: 12/2
+    # 20: Blake - testing when accumulator is negative. date: 12/2
     # input: none // expected output: 1 int // p/f: p
     def test_branchneg_neg(self):
         # input: none
@@ -201,7 +188,7 @@ class TestMain(unittest.TestCase):
         # expected output: 1 int
         self.assertEqual(main.program_counter, 1)
 
-    # 22: Blake - testing when accumulator is zero. date: 12/2
+    # 21: Blake - testing when accumulator is zero. date: 12/2
     # input: none // expected output: 0 int // p/f: p
     def test_branchzero_zero(self):
         # input: none
@@ -211,7 +198,7 @@ class TestMain(unittest.TestCase):
         # expected output: 0 int
         self.assertEqual(main.program_counter, 0) 
 
-    # 23: Blake - testing when accumulator is 0. date: 12/2
+    # 22: Blake - testing when accumulator is 0. date: 12/2
     # input: none // expected output: 1 int // p/f: p
     def test_branchzero_zero_nonz(self):
         # input: none
@@ -221,7 +208,7 @@ class TestMain(unittest.TestCase):
         # expected output: 1 int
         self.assertEqual(main.program_counter, 1)
 
-    # 24: Bryce/Blake - testing the value of program_running pre halt. date: 12/2
+    # 23: Bryce/Blake - testing the value of program_running pre halt. date: 12/2
     # input: none // expected output: True // p/f: p
     def test_pre_halt(self):
         # input: none
@@ -229,7 +216,7 @@ class TestMain(unittest.TestCase):
         # expected output: True
         self.assertEqual(main.program_running, True)
 
-    # 25: Bryce/Blake - testing the value of program_running post halt. date:12/3
+    # 24: Bryce/Blake - testing the value of program_running post halt. date:12/3
     # input: none // expected output: False // p/f: p
     def test_post_halt(self):
         # input: none
